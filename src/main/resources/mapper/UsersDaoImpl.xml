@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aaa.microfinance.server.dao.UsersDao">
+
+    <!--验证登录帐户名和密码-->
+    <select id="checkUsernameAndPassword" resultType="aaa.microfinance.server.entiry.Users">
+        select * from login where username=#{username} and password=#{password}
+    </select>
+
+    <!--获取当前登录用户能操作的一级菜单-->
+    <select id="listOneModules" resultType="aaa.microfinance.server.entiry.Module">
+        select distinct m.* from login l inner join login_role lr on l.id=lr.lid
+                              inner join module_role mr on lr.rid=mr.rid
+                              inner join module m on m.id=mr.mid
+                              where l.id=#{id} and level=1
+    </select>
+
+    <!--获取当前登录用户能操作的二级菜单-->
+    <select id="listTwoModules" resultType="aaa.microfinance.server.entiry.Module">
+        select distinct m.* from login l inner join login_role lr on l.id=lr.lid
+                              inner join module_role mr on lr.rid=mr.rid
+                              inner join module m on m.pid=mr.mid
+                              where l.id=#{users.id} and level=2 and m.pid=#{parent.id}
+    </select>
+</mapper>

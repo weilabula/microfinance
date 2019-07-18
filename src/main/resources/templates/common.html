@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head >
+    <meta charset="UTF-8">
+
+    <th:block th:fragment="copy">
+        <!-- 引入样式 -->
+        <link rel="stylesheet" th:href="@{/element-ui/index.css}" >
+        <!-- 先引入 Vue -->
+        <script th:src="@{/element-ui/vue.js}"></script>
+        <!-- 引入组件库 -->
+        <script th:src="@{/element-ui/index.js}"></script>
+        <!--引入图标文件-->
+        <script th:src="@{/element-ui/fonts/element-icons.woff}"></script>
+        <!--引入axios-->
+        <script th:src="@{/element-ui/axios.js}"></script>
+    </th:block>
+</head>
+<body>
+
+</body>
+</html>

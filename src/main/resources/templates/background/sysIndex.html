@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理系统首页</title>
+    <th:block th:include="~{/common :: copy}"></th:block>
+
+    <style>
+        #app,.el-container{
+            margin: 0px;
+            padding: 0px;
+            height: 100%;
+        }
+
+        .el-header, .el-footer {
+            background-color: #B3C0D1;
+            color: #333;
+            text-align: center;
+        }
+
+        .el-aside {
+            background-color: #D3DCE6;
+            color: #333;
+        }
+
+        .el-main {
+            background-color: #E9EEF3;
+            color: #333;
+            padding: 0px;
+        }
+
+        body > .el-container {
+            margin-bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <el-container style="height: 700px;">
+        <el-header>爱贷不贷-小额贷后台管理系统</el-header>
+        <el-container>
+            <!--一二级菜单-->
+            <el-aside width="200px">
+                <el-tree :data="data" :props="defaultProps" @node-click="treeClick" >
+                </el-tree>
+            </el-aside>
+            <!--选项卡-->
+            <el-main>
+                <el-tabs v-model="activeName" type="border-card" style="height: 600px">
+                    <el-tab-pane :label="item.name" v-for="(item,index) in tabsData" :name="item.name" :key="item.name">{{item.text}}</el-tab-pane>
+                </el-tabs>
+            </el-main>
+        </el-container>
+    </el-container>
+</div>
+
+</body>
+<script>
+    new Vue({
+        el:"#app",
+        data:{
+            //定义树形结构的数据
+            data:[],
+            defaultProps:{
+                children:'children',
+                label:'name'
+            },
+            //定义选项卡的数据
+            tabsData:[{
+                name:'首页',
+                text:'首页的内容'
+            }],
+            //激活某个选项卡
+            activeName:'首页'
+        },
+        //当vue组件加载完成后会自动调用此函数
+        mounted:function () {
+            //向后台发起ajax请求,加载树的节点的数据
+            var vue=this;
+            axios.post('getSysMenus')
+                .then(function (response) {
+                    vue.data=response.data;
+                })
+                .catch(function (error) {
+                    Vue.prototype.$message.error("服务器产生严重异常，请联系管理员...");
+                });
+        },
+        methods:{
+            //一二级菜单单击事件
+            treeClick:function (node) {
+                if(node.level==1){
+                    return ;
+                }
+                //声明变量，代表当前节点在选项卡中是否已存在
+                var exists=false;
+                for(var index in this.tabsData){
+                    if(node.name==this.tabsData[index].name){
+                        exists=true;
+                        break;
+                    }
+                }
+                //如果选项卡中不存在此二级菜单，则响应点击事件加入到右边选项卡中
+                if(!exists){
+                    //往选项卡加入子选项卡
+                    this.tabsData.push({
+                        name:node.name,
+                        content:node.text
+                    });
+                }
+                //激活选中的选项卡
+                this.activeName=node.name;
+            }
+        }
+    });
+</script>
+</html>

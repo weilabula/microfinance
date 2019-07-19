@@ -8,6 +8,7 @@ import java.util.List;
 */
 public class Module {
     private Long id;
+    //模块名称
     private String name;
     private Integer level;
     private Long pid;

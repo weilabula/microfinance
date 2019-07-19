@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
 	<meta name="author" content="order by dede58.com"/>
-	<title>校园春光小额贷</title>
-	<link rel="stylesheet" type="text/css" href="css/jquery.smarticker.css">
-	<link rel="stylesheet" type="text/css" href="./css/style.css">
-	<script src="/ssm/Jquery/jquery-3.4.1.min.js"></script>
+	<!--引入client-common公共代码-->
+	<th:block th:include="~{/client-common :: copy}"></th:block>
+	<link rel="stylesheet" href="../client-static/css/jquery.smarticker.css" >
+	<script src="../client-static/js/smarticker.js"></script>
+	<title>艾迪比迪小额贷</title>
+
 </head>
 <body>
 <!--引用头部-->
@@ -15,7 +17,7 @@
 <!--end header -->
 
 <!-- start banner_x -->
-<div class="banner_x center" style='background:url("/ssm/image/qiantai/indexcenter.jpg");width: 100%;'>
+<div class="banner_x center" style='background:url("../client-static/image/qiantai/indexcenter.jpg");width: 100%;'>
 	<!--	<img src="/ssm/image/qiantai/indexcenter.jpg" class="indexconter" style="width: 100%">-->
 	<div class="content border-top lightgray blue" id="conter_new" style="width: 634px;
 position: absolute;
@@ -118,10 +120,10 @@ height: 250px;
 background: #e8e1e14f;
 ">
 	<div class="content_2" style="width: 1000px;height: 88px;margin: 2px auto;">
-		<img src="/ssm/image/qiantai/indexcenter01.png">
+		<img src="../client-static/image/qiantai/indexcenter01.png">
 	</div>
 	<div class="content_3" style="width: 1000px;height: 88px;margin: 2px auto;">
-		<img src="/ssm/image/qiantai/indexcenter02.png">
+		<img src="../client-static/image/qiantai/indexcenter02.png">
 	</div>
 </div>
 
@@ -141,12 +143,10 @@ border: #b98d8d solid 2px;">
 </footer>
 
 </body>
-<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="js/smarticker.js"></script>
 
 <script>
 	$(function(){
-		$(".toppage").load("/ssm/toppage");
+		$(".toppage").load("top");
 	});
 
 </script>

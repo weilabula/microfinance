@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="aaa.microfinance.server.dao.UsersDao">
+<mapper namespace="aaa.microfinance.server.dao.LoginDao">
 
     <!--验证登录帐户名和密码-->
-    <select id="checkUsernameAndPassword" resultType="aaa.microfinance.server.entiry.Users">
+    <select id="checkUsernameAndPassword" resultType="aaa.microfinance.server.entiry.Login">
         select * from login where username=#{username} and password=#{password}
     </select>
 
@@ -21,6 +21,6 @@
         select distinct m.* from login l inner join login_role lr on l.id=lr.lid
                               inner join module_role mr on lr.rid=mr.rid
                               inner join module m on m.pid=mr.mid
-                              where l.id=#{users.id} and level=2 and m.pid=#{parent.id}
+                              where l.id=#{login.id} and level=2 and m.pid=#{parent.id}
     </select>
 </mapper>

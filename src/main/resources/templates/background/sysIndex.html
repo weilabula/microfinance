@@ -47,7 +47,9 @@
             <!--选项卡-->
             <el-main>
                 <el-tabs v-model="activeName" type="border-card" style="height: 600px" @tab-remove="removeTab">
-                    <el-tab-pane :label="item.name" v-for="(item,index) in tabsData" :name="item.name" :closable="item.closable" :key="item.name">{{item.text}}</el-tab-pane>
+                    <el-tab-pane v-for="(item,index) in tabsData" :label="item.name" :name="item.name" :closable="item.closable" :key="item.name">
+                        <iframe :src="item.path" width="100%" height="500" frameborder="0"></iframe>
+                    </el-tab-pane>
                 </el-tabs>
             </el-main>
         </el-container>
@@ -65,9 +67,10 @@
                 children:'children',
                 label:'name'
             },
-            //定义选项卡的数据
+            //定义选项卡的数据,先设定一个初始的选项卡
             tabsData:[{
                 name:'首页',
+                path: 'welcome',
                 closable:false
             }],
             //激活某个选项卡
@@ -102,10 +105,8 @@
                 //如果选项卡中不存在此二级菜单，则响应点击事件加入到右边选项卡中
                 if(!exists){
                     //往选项卡加入子选项卡
-                    this.tabsData.push({
-                        name:node.name,
-                        closable:true
-                    });
+                    node.closable=true;
+                    this.tabsData.push(node);
                 }
                 //激活选中的选项卡
                 this.activeName=node.name;

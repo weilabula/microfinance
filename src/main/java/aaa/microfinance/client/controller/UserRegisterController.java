@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
+@RequestMapping("/client")
 public class UserRegisterController {
     @Autowired
     HttpServletRequest request;

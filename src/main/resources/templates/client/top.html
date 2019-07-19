@@ -1,10 +1,10 @@
 
 <header>
     <div class="top center">
-        <img src="/ssm/image/qiantai/indextop.png" class="indextop" style="height: 99px" >
+        <img src="../client-static/image/qiantai/indextop.png" class="indextop" style="height: 99px" >
         <div class="left fl">
             <ul>
-                <li><a href="">春色校园贷</a></li>
+                <li><a href="">艾迪比迪-小额贷</a></li>
                 <li>|</li>
                 <li><a href="./applyforloan">申请贷款</a></li>
                 <li>|</li>
@@ -44,7 +44,7 @@
 <script>
     $(function(){
         $.ajax({
-            url: '/ssm/loginresult',
+            url: 'loginresult',
             data: {name: 'hujun'},
             type: "post",
             dataType: "json",
@@ -57,7 +57,7 @@
                     $("#register_exit").append("<a class='exit' href=''>退出</a>");
                     $(".exit").click(function() {
                         if (confirm('系统提示，您确定要退出本次登录吗?')) {
-                            window.location.href = "/ssm/dropout";
+                            window.location.href = "dropout";
                         }
                     });
 

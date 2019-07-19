@@ -5,5 +5,5 @@ package aaa.microfinance.server.common;
 */
 public class Constants {
     //session中放置的用户的标识
-    public static final String SESSION_USER="session_user";
+    public static final String SESSION_EMP="session_emp";
 }

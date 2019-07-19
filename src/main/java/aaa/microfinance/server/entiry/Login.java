@@ -1,9 +1,9 @@
 package aaa.microfinance.server.entiry;
 /**
- * @Description: 部门实体类
- * @Date: 2019/7/16 11:01
- */
-public class Users {
+ * @Description: 登录表实体类
+ * @Date: 2019/7/19 8:35
+*/
+public class Login {
     private Long id;
     private String username;
     private String password;
@@ -30,14 +30,5 @@ public class Users {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        return "Users{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
     }
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aaa.microfinance.server.dao.RerecordsDao">
+    <!--查询所有还款记录-->
+    <select id="listRerecords" resultType="aaa.microfinance.server.entiry.Rerecords">
+        select * from rerecords
+    </select>
+
+    <!--新增还款记录-->
+    <insert id="save">
+        insert into rerecords (cusid,cusname,loanmount,orderdate,reimdate,bystages,loanstatus) values(#{cusid},#{cusname},#{loanmount},#{orderdate},#{reimdate},#{bystages},#{loanstatus})
+    </insert>
+
+    <!--更新还款记录-->
+    <update id="update">
+        update rerecords set cusid=#{cusid},cusname=#{cusname},loanmount=#{loanmount},orderdate=#{orderdate},reimdate=#{reimdate},bystages=#{bystages},loanstatus=#{loanstatus} where id=#{id}
+    </update>
+
+    <!--根据还款记录ID删除还款记录-->
+    <delete id="deleteRerecords">
+        delete from rerecords where id=#{id}
+    </delete>
+
+</mapper>

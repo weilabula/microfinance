@@ -5,7 +5,7 @@ package aaa.microfinance.server.common;
  */
 public class DefaultMsg {
     private Integer success=1;
-    private String erroe;
+    private String error;
 
     public Integer getSuccess() {
         return success;
@@ -15,11 +15,11 @@ public class DefaultMsg {
         this.success = success;
     }
 
-    public String getErroe() {
-        return erroe;
+    public String getError() {
+        return error;
     }
 
-    public void setErroe(String erroe) {
-        this.erroe = erroe;
+    public void setError(String error) {
+        this.error = error;
     }
 }

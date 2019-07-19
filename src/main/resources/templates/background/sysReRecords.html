@@ -3,9 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <th:block th:include="~{/common :: copy}"></th:block>
-    <title>Title</title>
+    <title>还款管理</title>
 </head>
 <body>
+    <div id="app">
+        <div style="margin-bottom: 10px;">
+            <el-button type="primary" @click="showEditWind">添加用户</el-button>
+        </div>
+        <!--编辑用户的对话框-->
+        <el-dialog :title="title" :visible.sync="editVisible" width="30%" >
 
+            <el-form ref="form" :model="form" label-width="80px" :rules="rules">
+                <el-form-item label="编号" prop="id" hidden>
+                    <el-input v-model="form.id" ></el-input>
+                </el-form-item>
+                <el-form-item label="客户编号" prop="cusid">
+                    <el-input v-model="form.cusid" ></el-input>
+                </el-form-item>
+                <el-form-item label="客户名称" prop="cusname">
+                    <el-input v-model="form.cusname" ></el-input>
+                </el-form-item>
+                <el-form-item label="贷款金额" prop="loanmount">
+                    <el-input v-model="form.loanmount" ></el-input>
+                </el-form-item>
+                <el-form-item label="贷款日期" prop="orderdate">
+                    <el-input v-model="form.orderdate" ></el-input>
+                </el-form-item>
+                <el-form-item label="还款日期" prop="reimdate">
+                    <el-input v-model="form.reimdate" ></el-input>
+                </el-form-item>
+                <el-form-item label="分期数" prop="bystages">
+                    <el-input v-model="form.bystages" ></el-input>
+                </el-form-item>
+                <el-form-item label="还款状态" prop="loanstatus" hidden>
+                    <el-input v-model="form.loanstatus" ></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="restForm('form')">重置</el-button>
+                <el-button type="primary" @click="onSubmit('form')">确 定</el-button>
+            </span>
+        </el-dialog>
+
+        <!--删除用户的对话框-->
+        <el-dialog :title="title1" :visible.sync="deleteVisible" width="30%" >
+            <el-form ref="form1" :model="form1" label-width="80px">
+                <el-form-item label="编号" prop="id" hidden>
+                    <el-input v-model="form1.id" ></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="restReForm('form1')">取 消</el-button>
+                <el-button type="primary" @click="onReSubmit('form1')">确 定</el-button>
+            </span>
+        </el-dialog>
+
+        <!--还款记录数据区域-->
+        <el-table :data="tableData" style="width: 100%" stripe border height="650">
+            <el-table-column
+                    prop="id"
+                    label="编号">
+            </el-table-column>
+            <el-table-column
+                    prop="cusid"
+                    label="客户编号">
+            </el-table-column>
+            <el-table-column
+                    prop="cusname"
+                    label="客户姓名">
+            </el-table-column>
+            <el-table-column
+                    prop="loanmount"
+                    label="贷款金额">
+            </el-table-column>
+            <el-table-column
+                    prop="orderdate"
+                    label="贷款日期">
+            </el-table-column>
+            <el-table-column
+                    prop="reimdate"
+                    label="还款日期">
+            </el-table-column>
+            <el-table-column
+                    prop="bystages"
+                    label="分期数">
+            </el-table-column>
+            <el-table-column
+                    prop="loanstatus"
+                    label="还款状态">
+            </el-table-column>
+            <el-table-column label="操作">
+                <template slot-scope="scope">
+                    <el-button
+                            size="mini"
+                            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button
+                            size="mini"
+                            type="danger"
+                            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
 </body>
+
+<script>
+    new Vue({
+        el:"#app",
+        data:{
+            tableData:[],
+            editVisible:false,
+            deleteVisible:false,
+            title:'',
+            title1:'',
+            form:{
+                //初始值均为空
+                id:'',
+                cusid:'',
+                cusname:'',
+                loanmount:'',
+                orderdate:'',
+                reimdate:'',
+                bystages:'',
+                loanstatus:''
+            },
+            form1:{
+              id:''
+            },
+            //声明校验规则
+            rules:{
+                cusid: [
+                    { required: true, message: '请输入客户编号', trigger: 'blur' }
+                ],
+                cusname: [
+                    { required: true, message: '请输入客户名', trigger: 'blur' }
+                ],
+                loanmount: [
+                    { required: true, message: '请输入贷款金额', trigger: 'blur' }
+                ],
+                orderdate: [
+                    { required: true, message: '请输入贷款日期', trigger: 'blur' }
+                ],
+                reimdate: [
+                    { required: true, message: '请输入还款日期', trigger: 'blur' }
+                ],
+                bystages: [
+                    { required: true, message: '请输入分期数', trigger: 'blur' }
+                ]
+            }
+
+        },
+        //当vue组件加载完成后会自动调用此函数
+        mounted:function () {
+            //加载表格数据
+            this.loadTableData();
+        },
+        //事件
+        methods:{
+            //声明加载表格数据的方法
+            loadTableData:function (){
+                //向后台发起ajax请求,加载还款记录表数据
+                var vue=this;
+                axios.post('listRerecords')
+                    .then(function (response) {
+                        vue.tableData=response.data;
+                    })
+                    .catch(function (error) {
+                        Vue.prototype.$message.error("服务器产生严重异常，请联系管理员...");
+                    });
+            },
+            showEditWind:function () {
+                //显示编辑框
+                this.editVisible=true;
+                this.title="新增用户";
+            },
+            //提交的事件
+            onSubmit:function (formName) {
+                var vue=this;
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        //往后台发送ajax请求，添加或者更新还款记录
+                        axios.post('saveOrUpdate',this.form)
+                            .then(function (response) {
+                                if(response.data.success){
+                                    //刷新页面
+                                    vue.loadTableData();
+                                    //关闭窗口
+                                    vue.editVisible=false;
+                                }
+                                else{
+                                    vue.$message.error(response.data.error);
+                                }
+                            })
+                            .catch(function (error) {
+                                Vue.prototype.$message.error("服务器产生严重异常，请联系管理员...");
+                            });
+                    }
+                    else{
+                        return false;
+                    }
+                });
+            },
+            //重置事件
+            restForm:function(formName){
+                this.$refs[formName].resetFields();
+            },
+            //修改用户
+            handleEdit:function(index, row) {
+                //显示编辑窗口
+                this.editVisible=true;
+                this.title="编辑用户";
+                this.form=row;
+            },
+            //删除用户
+            handleDelete:function(index, row) {
+                this.title1="删除用户";
+                this.deleteVisible=true;
+                this.form1=row;
+            },
+            onReSubmit:function (formName) {
+                var vue=this;
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        //往后台发送ajax请求，添加或者更新还款记录
+                        axios.post('deleteRerecords',this.form1)
+                            .then(function (response) {
+                                if(response.data.success){
+                                    //刷新页面
+                                    vue.loadTableData();
+                                    //关闭窗口
+                                    vue.deleteVisible=false;
+                                }
+                                else{
+                                    vue.$message.error(response.data.error);
+                                }
+                            })
+                            .catch(function (error) {
+                                Vue.prototype.$message.error("服务器产生严重异常，请联系管理员...");
+                            });
+                    }
+                    else{
+                        return false;
+                    }
+                });
+            },
+            //删除窗口取消关闭事件
+            restReForm:function(formName){
+                this.deleteVisible=false;
+            }
+        }
+    });
+</script>
 </html>

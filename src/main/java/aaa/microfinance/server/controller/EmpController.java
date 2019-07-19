@@ -1,5 +1,6 @@
 package aaa.microfinance.server.controller;
 
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Date: 2019/7/19 8:29
 */
 @RestController
+@RequestMapping("server")
 public class EmpController {
 
 }

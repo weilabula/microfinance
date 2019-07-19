@@ -4,6 +4,7 @@ import aaa.microfinance.server.entiry.Emp;
 import aaa.microfinance.server.entiry.Login;
 import aaa.microfinance.server.entiry.Module;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -36,5 +37,5 @@ public interface LoginDao {
     * @Param: [login, parent]
     * @return: java.util.List<aaa.microfinance.server.entiry.Module> 
     */ 
-    public List<Module> listTwoModules(Login login, Module parent);
+    public List<Module> listTwoModules(@Param("login") Login login, @Param("parent") Module parent);
 }

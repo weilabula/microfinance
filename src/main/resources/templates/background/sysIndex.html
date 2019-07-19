@@ -36,7 +36,7 @@
 </head>
 <body>
 <div id="app">
-    <el-container style="height: 700px;">
+    <el-container style="height: 1000px;">
         <el-header>爱贷不贷-小额贷后台管理系统</el-header>
         <el-container>
             <!--一二级菜单-->
@@ -46,9 +46,9 @@
             </el-aside>
             <!--选项卡-->
             <el-main>
-                <el-tabs v-model="activeName" type="border-card" style="height: 600px" @tab-remove="removeTab">
+                <el-tabs v-model="activeName" type="border-card" style="height: 1000px" @tab-remove="removeTab">
                     <el-tab-pane v-for="(item,index) in tabsData" :label="item.name" :name="item.name" :closable="item.closable" :key="item.name">
-                        <iframe :src="item.path" width="100%" height="500" frameborder="0"></iframe>
+                        <iframe :src="item.path" width="100%" height="950" frameborder="0"></iframe>
                     </el-tab-pane>
                 </el-tabs>
             </el-main>

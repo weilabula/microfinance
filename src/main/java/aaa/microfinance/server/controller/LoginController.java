@@ -1,7 +1,6 @@
 package aaa.microfinance.server.controller;
 
 import aaa.microfinance.server.common.Constants;
-import aaa.microfinance.server.entiry.Emp;
 import aaa.microfinance.server.entiry.Login;
 import aaa.microfinance.server.entiry.Module;
 import aaa.microfinance.server.service.LoginService;
@@ -38,7 +37,7 @@ public class LoginController {
         //认证失败
         if(log==null){
             dm.setSuccess(0);
-            dm.setErroe("账户名或者密码错误！请重新输入..");
+            dm.setError("账户名或者密码错误！请重新输入..");
         }
         else{
             session.setAttribute(Constants.SESSION_EMP,log);

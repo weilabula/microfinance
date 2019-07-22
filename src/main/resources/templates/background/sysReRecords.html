@@ -6,121 +6,172 @@
     <title>还款管理</title>
 </head>
 <body>
-    <div id="app">
-        <div style="margin-bottom: 10px;">
+<div id="app">
+    <div style="margin-bottom: 10px;">
+        <el-form :inline="true" ref="formInline" :model="formInline" class="demo-form-inline">
             <el-button type="primary" @click="showEditWind">添加用户</el-button>
-        </div>
-        <!--编辑用户的对话框-->
-        <el-dialog :title="title" :visible.sync="editVisible" width="30%" >
-
-            <el-form ref="form" :model="form" label-width="80px" :rules="rules">
-                <el-form-item label="编号" prop="id" hidden>
-                    <el-input v-model="form.id" ></el-input>
-                </el-form-item>
-                <el-form-item label="客户编号" prop="cusid">
-                    <el-input v-model="form.cusid" ></el-input>
-                </el-form-item>
-                <el-form-item label="客户名称" prop="cusname">
-                    <el-input v-model="form.cusname" ></el-input>
-                </el-form-item>
-                <el-form-item label="贷款金额" prop="loanmount">
-                    <el-input v-model="form.loanmount" ></el-input>
-                </el-form-item>
-                <el-form-item label="贷款日期" prop="orderdate">
-                    <el-input v-model="form.orderdate" ></el-input>
-                </el-form-item>
-                <el-form-item label="还款日期" prop="reimdate">
-                    <el-input v-model="form.reimdate" ></el-input>
-                </el-form-item>
-                <el-form-item label="分期数" prop="bystages">
-                    <el-input v-model="form.bystages" ></el-input>
-                </el-form-item>
-                <el-form-item label="还款状态" prop="loanstatus" hidden>
-                    <el-input v-model="form.loanstatus" ></el-input>
-                </el-form-item>
-            </el-form>
-            <span slot="footer" class="dialog-footer">
+            <el-form-item label="客户编号">
+                <el-input v-model="formInline.cusid" placeholder="客户编号"></el-input>
+            </el-form-item>
+            <el-form-item label="客户姓名">
+                <el-input v-model="formInline.cusname" placeholder="客户姓名"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="onRerecordsFind('formInline')">查询</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
+    <!--新增/修改对话框-->
+    <!--新增时，先为整个表单框定义一个总变量form（可以任意命名），
+        然后为每一个输入框附加一个子属性，id，cusid，cusname...等等，
+        填完信息，提交发送新增的请求，子属性名和表字段名对应，因此可以插入新数据
+    -->
+    <el-dialog :title="title" :visible.sync="editVisible" width="30%" >
+        <el-form ref="form" :model="form" label-width="80px" :rules="rules">
+            <el-form-item label="编号" prop="id" hidden>
+                <el-input v-model="form.id" ></el-input>
+            </el-form-item>
+            <el-form-item label="客户编号" prop="cusid">
+                <el-input v-model="form.cusid"></el-input>
+            </el-form-item>
+            <el-form-item label="客户名称" prop="cusname">
+                <el-input v-model="form.cusname" ></el-input>
+            </el-form-item>
+            <el-form-item label="订单编号" prop="ordernumber">
+                <el-input v-model="form.ordernumber"></el-input>
+            </el-form-item>
+            <el-form-item label="贷款金额" prop="loanmount">
+                <el-input v-model="form.loanmount" ></el-input>
+            </el-form-item>
+            <el-form-item label="贷款日期" prop="orderdate">
+                <el-input v-model="form.orderdate" ></el-input>
+            </el-form-item>
+            <el-form-item label="还款日期" prop="reimdate">
+                <el-input v-model="form.reimdate" ></el-input>
+            </el-form-item>
+            <el-form-item label="分期数" prop="bystages">
+                <el-input v-model="form.bystages" ></el-input>
+            </el-form-item>
+            <el-form-item label="还款状态" prop="loanstatus" hidden>
+                <el-input v-model="form.loanstatus" ></el-input>
+            </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
                 <el-button @click="restForm('form')">重置</el-button>
                 <el-button type="primary" @click="onSubmit('form')">确 定</el-button>
             </span>
-        </el-dialog>
+    </el-dialog>
 
-        <!--删除用户的对话框-->
-        <el-dialog :title="title1" :visible.sync="deleteVisible" width="30%" >
-            <el-form ref="form1" :model="form1" label-width="80px">
-                <el-form-item label="编号" prop="id" hidden>
-                    <el-input v-model="form1.id" ></el-input>
-                </el-form-item>
-            </el-form>
-            <span slot="footer" class="dialog-footer">
+    <!--删除对话框-->
+    <el-dialog :title="title1" :visible.sync="deleteVisible" width="30%" >
+        <el-form ref="form1" :model="form1" label-width="80px">
+            <el-form-item label="编号" prop="id" hidden>
+                <el-input v-model="form1.id" ></el-input>
+            </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
                 <el-button @click="restReForm('form1')">取 消</el-button>
                 <el-button type="primary" @click="onReSubmit('form1')">确 定</el-button>
             </span>
-        </el-dialog>
+    </el-dialog>
 
-        <!--还款记录数据区域-->
-        <el-table :data="tableData" style="width: 100%" stripe border height="650">
-            <el-table-column
-                    prop="id"
-                    label="编号">
-            </el-table-column>
-            <el-table-column
-                    prop="cusid"
-                    label="客户编号">
-            </el-table-column>
-            <el-table-column
-                    prop="cusname"
-                    label="客户姓名">
-            </el-table-column>
-            <el-table-column
-                    prop="loanmount"
-                    label="贷款金额">
-            </el-table-column>
-            <el-table-column
-                    prop="orderdate"
-                    label="贷款日期">
-            </el-table-column>
-            <el-table-column
-                    prop="reimdate"
-                    label="还款日期">
-            </el-table-column>
-            <el-table-column
-                    prop="bystages"
-                    label="分期数">
-            </el-table-column>
-            <el-table-column
-                    prop="loanstatus"
-                    label="还款状态">
-            </el-table-column>
-            <el-table-column label="操作">
-                <template slot-scope="scope">
-                    <el-button
-                            size="mini"
-                            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button
-                            size="mini"
-                            type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-    </div>
+    <!--还款记录数据区域-->
+    <!--页面加载时即同时发送获取还款记录数据的请求，回显数据通过数据变量名和tableData中的变量名对应实现-->
+    <el-table :data="tableData" style="width: 100%" stripe border height="650">
+        <el-table-column
+                prop="id"
+                label="编号">
+        </el-table-column>
+        <el-table-column
+                prop="cusid"
+                label="客户编号">
+        </el-table-column>
+        <el-table-column
+                prop="cusname"
+                label="客户姓名">
+        </el-table-column>
+        <el-table-column
+                prop="ordernumber"
+                label="订单编号">
+        </el-table-column>
+        <el-table-column
+                prop="loanmount"
+                label="贷款金额">
+        </el-table-column>
+        <el-table-column
+                prop="orderdate"
+                label="贷款日期">
+        </el-table-column>
+        <el-table-column
+                prop="reimdate"
+                label="还款日期">
+        </el-table-column>
+        <el-table-column
+                prop="bystages"
+                label="分期数">
+        </el-table-column>
+        <el-table-column
+                prop="loanstatus"
+                label="还款状态">
+        </el-table-column>
+        <el-table-column label="操作" width="300">
+            <!--scope相当于记录了当前表格中的所有数据，scope.$index中相当于放置了当前选中行的下标，
+            scope.row相当于放置了当前选中行的所有字段内容，因此点编辑的时候编辑框中填充了当前行的所有内容，而新增按钮没有这俩属性，所以点新增后输入框中啥也没有-->
+            <template slot-scope="scope">
+                <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handleDetail(scope.row)">查看详情</el-button>
+            </template>
+        </el-table-column>
+    </el-table>
+
+    <!--贷款详情数据表-->
+    <el-dialog :title="title2" :visible.sync="detailVisible" width="80%">
+            <el-table :data="dataDetail"  stripe border>
+                <el-table-column prop="lid" label="贷款订单主键"></el-table-column>
+                <el-table-column prop="ordernumber" label="订单编号"></el-table-column>
+                <el-table-column prop="customerid" label="客户ID"></el-table-column>
+                <el-table-column prop="orderdate" label="下单日期"></el-table-column>
+                <el-table-column prop="loanmount" label="贷款金额"> </el-table-column>
+                <el-table-column prop="loanway" label="贷款方式"> </el-table-column>
+                <el-table-column prop="bystages" label="分期数"> </el-table-column>
+                <el-table-column prop="overdue" label="是否逾期"> </el-table-column>
+                <el-table-column prop="bankaccountid" label="公司银行卡"> </el-table-column>
+                <el-table-column prop="banknumber" label="客户银行卡"> </el-table-column>
+                <el-table-column prop="loanstatus" label="贷款状态"> </el-table-column>
+            </el-table>
+    </el-dialog>
+</div>
 </body>
 
 <script>
     new Vue({
         el:"#app",
         data:{
+            //还款记录数据块，初始为空
             tableData:[],
+            //订单详情数据块，初始为空
+            dataDetail:[],
             editVisible:false,
             deleteVisible:false,
+            detailVisible:false,
             title:'',
             title1:'',
+            title2:'贷款详情',
             form:{
                 //初始值均为空
                 id:'',
                 cusid:'',
                 cusname:'',
+                ordernumber:'',
                 loanmount:'',
                 orderdate:'',
                 reimdate:'',
@@ -128,7 +179,11 @@
                 loanstatus:''
             },
             form1:{
-              id:''
+                id:''
+            },
+            formInline:{
+                cusid:'',
+                cusname:''
             },
             //声明校验规则
             rules:{
@@ -137,6 +192,9 @@
                 ],
                 cusname: [
                     { required: true, message: '请输入客户名', trigger: 'blur' }
+                ],
+                ordernumber:[
+                    { required: true, message: '请输入订单编号', trigger: 'blur' }
                 ],
                 loanmount: [
                     { required: true, message: '请输入贷款金额', trigger: 'blur' }
@@ -172,10 +230,11 @@
                         Vue.prototype.$message.error("服务器产生严重异常，请联系管理员...");
                     });
             },
+            //新增
             showEditWind:function () {
-                //显示编辑框
+                //显示新增框
                 this.editVisible=true;
-                this.title="新增用户";
+                this.title="新增还款记录";
             },
             //提交的事件
             onSubmit:function (formName) {
@@ -208,16 +267,16 @@
             restForm:function(formName){
                 this.$refs[formName].resetFields();
             },
-            //修改用户
+            //修改
             handleEdit:function(index, row) {
-                //显示编辑窗口
+                //显示修改窗口
                 this.editVisible=true;
-                this.title="编辑用户";
+                this.title="修改还款记录";
                 this.form=row;
             },
-            //删除用户
+            //删除
             handleDelete:function(index, row) {
-                this.title1="删除用户";
+                this.title1="删除还款记录";
                 this.deleteVisible=true;
                 this.form1=row;
             },
@@ -250,6 +309,39 @@
             //删除窗口取消关闭事件
             restReForm:function(formName){
                 this.deleteVisible=false;
+            },
+            //根据条件模糊查询还款记录
+            onRerecordsFind:function (formInline) {
+                var vue=this;
+                this.$refs[formInline].validate((valid) => {
+                    if (valid) {
+                        //往后台发送ajax请求，添加或者更新还款记录
+                        axios.post('findRerecords',this.formInline)
+                            .then(function (response) {
+                                vue.tableData=response.data;
+                            })
+                            .catch(function (error) {
+                                Vue.prototype.$message.error("服务器产生严重异常，请联系管理员...");
+                            });
+                    }
+                    else{
+                        return false;
+                    }
+                });
+            },
+
+            //订单详情
+            handleDetail:function (row) {
+                this.detailVisible=true;
+                var vue=this;
+                //往后台发送ajax请求，添加或者更新还款记录
+                axios.post('loanDetail',row)
+                    .then(function (response) {
+                        vue.dataDetail=response.data;
+                    })
+                    .catch(function (error) {
+                        Vue.prototype.$message.error("服务器产生严重异常，请联系管理员...");
+                    });
             }
         }
     });

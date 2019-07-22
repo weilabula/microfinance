@@ -1,6 +1,8 @@
 package aaa.microfinance.server.service.impl;
 
 import aaa.microfinance.server.dao.RerecordsDao;
+import aaa.microfinance.server.entiry.Loanorders;
+import aaa.microfinance.server.entiry.Login;
 import aaa.microfinance.server.entiry.Rerecords;
 import aaa.microfinance.server.service.RerecordsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,4 +71,24 @@ public class RerecordsSerciveImpl implements RerecordsService {
         return rerecordsDao.deleteRerecords(id);
     }
 
+    /**
+    * @Description: 模糊查询还款记录
+    * @Param: [rerecords]
+    * @return: java.util.List<aaa.microfinance.server.entiry.Rerecords>
+    */
+    @Override
+    public List<Rerecords> findRerecords(Rerecords rerecords) {
+        List<Rerecords> rerecordsList = rerecordsDao.findRerecords(rerecords.getCusid(),rerecords.getCusname());
+        return rerecordsList;
+    }
+
+    /**
+     * @Description: 根据订单编号查询贷款详情
+     * @Param: [cusid]
+     * @return: java.util.List<aaa.microfinance.server.entiry.Loanorders>
+     */
+    public List<Loanorders> loanDetail(String ordernumber){
+        List<Loanorders> loanorder = rerecordsDao.loanDetail(ordernumber);
+        return loanorder;
+    }
 }

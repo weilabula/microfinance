@@ -10,6 +10,9 @@ public class WebConfigurer implements WebMvcConfigurer {
    @Autowired
     private UserInfoInterceptor userInfoInterceptor;
 
+   @Autowired
+   private ServerInterceptor serverInterceptor;
+
     // 这个方法是用来配置静态资源的，比如html，js，css，等等
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -19,15 +22,10 @@ public class WebConfigurer implements WebMvcConfigurer {
     // 这个方法用来注册拦截器，我们自己写好的拦截器需要通过这里添加注册才能生效
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        System.out.println ("进入拦截");
-        // addPathPatterns("/**") 表示拦截所有的请求，
-        // excludePathPatterns("/login", "/register") 表示除了登陆与注册之外，因为登陆注册不需要登陆也可以访问
-        //注册拦截器
-        registry.addInterceptor(userInfoInterceptor).addPathPatterns ("/**").excludePathPatterns("/client-static/**/**","/client-static/**/**/**","/client-static/**/**/**.**",
-                "/client/aboutus","/client/login", "/client/register","/client/index","/client/top","/client/userlogin","/client/userregister","/client/dropout","/element-ui/**","/server/**","/server/**/**");
-
-        // super.addInterceptors(registry);    //较新Spring Boot的版本中这里可以直接去掉，否则会报错
-
+        //注册客户端拦截器
+        registry.addInterceptor(userInfoInterceptor).addPathPatterns ("/client/**").excludePathPatterns("/client/aboutus","/client/login", "/client/register","/client/index","/client/top","/client/foot","/client/userlogin","/client/userregister","/client/dropout");
+        //注册客户端拦截器
+        registry.addInterceptor(serverInterceptor).addPathPatterns ("/server/**").excludePathPatterns("/server/sysLogin","/server/checkSysLogin");
     }
 
 }

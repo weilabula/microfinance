@@ -4,7 +4,7 @@
 <mapper namespace="aaa.microfinance.server.dao.RerecordsDao">
     <!--查询所有还款记录-->
     <select id="listRerecords" resultType="aaa.microfinance.server.entiry.Rerecords">
-        select * from rerecords
+        select * from rerecords order by id desc
     </select>
 
     <!--新增还款记录-->
@@ -22,4 +22,20 @@
         delete from rerecords where id=#{id}
     </delete>
 
+    <!--根据条件模糊查询还款记录-->
+    <select id="findRerecords" resultType="aaa.microfinance.server.entiry.Rerecords">
+        select DISTINCT * from rerecords where 1
+            <if test="cusid!=null">
+                and LOCATE(#{cusid},cusid)>0
+            </if>
+            <if test="cusname!=null">
+                and LOCATE(#{cusname},cusname)>0
+            </if>
+            order by id desc
+    </select>
+
+    <!--根据客户ID查询贷款详情-->
+    <select id="loanDetail" resultType="aaa.microfinance.server.entiry.Loanorders">
+        select * from loanorders where ordernumber=#{ordernumber}
+    </select>
 </mapper>

@@ -5,6 +5,7 @@ import aaa.microfinance.client.dao.UserRegirestDao;
 import aaa.microfinance.client.service.UserRegirestService;
 import aaa.microfinance.client.utils.ReturnModel;
 import aaa.microfinance.client.utils.SessionUtils;
+import aaa.microfinance.server.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +32,7 @@ public class UserRegirestServiceImp  implements UserRegirestService {
         UserBean userlogin = userRegirestDao.userlogin (username, password);
         HttpSession session = SessionUtils.getsession (request);
         if(userlogin!=null){
-            session.setAttribute ("userinfo",userlogin);
+            session.setAttribute (Constants.SESSION_CLIENT_LOGIN,userlogin);
             returnModel.setCode (200);
             returnModel.setMessage ("登陆成功");
             returnModel.setStatus (true);

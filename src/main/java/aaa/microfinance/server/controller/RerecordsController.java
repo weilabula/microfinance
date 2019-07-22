@@ -1,12 +1,14 @@
 package aaa.microfinance.server.controller;
 
 import aaa.microfinance.server.common.DefaultMsg;
+import aaa.microfinance.server.entiry.Loanorders;
 import aaa.microfinance.server.entiry.Rerecords;
 import aaa.microfinance.server.service.RerecordsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -73,5 +75,28 @@ public class RerecordsController {
         }
 
         return dm;
+    }
+
+    /**
+    * @Description: 根据条件模糊查询还款记录
+    * @Param: [rerecords]
+    * @return: java.util.List<aaa.microfinance.server.entiry.Rerecords>
+    */
+    @RequestMapping("/re/findRerecords")
+    public List<Rerecords> findRerecords(@RequestBody Rerecords rerecords){
+        List<Rerecords> rerecordsList = rerecordsService.findRerecords(rerecords);
+        return rerecordsList;
+    }
+
+    /** 
+    * @Description: 根据订单编号查询贷款详情
+    * @Param: [rerecords]
+    * @return: java.util.List<aaa.microfinance.server.entiry.Loanorders> 
+    */ 
+    @RequestMapping("/re/loanDetail")
+    public List<Loanorders> loanDetail(@RequestBody Rerecords rerecords){
+        String ordernumber = rerecords.getOrdernumber();
+        List<Loanorders> loanorders = rerecordsService.loanDetail(ordernumber);
+        return loanorders;
     }
 }

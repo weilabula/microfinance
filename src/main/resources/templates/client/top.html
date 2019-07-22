@@ -1,22 +1,25 @@
+<link rel="stylesheet" type="text/css" href="/client-static/css/style.css">
 
 <header>
     <div class="top center">
-        <img src="../client-static/image/qiantai/indextop.png" class="indextop" style="height: 99px" >
+        <img src="/client-static/image/qiantai/indextop.png" class="indextop" style="height: 99px" >
         <div class="left fl">
             <ul>
-                <li><a href="">艾迪比迪-小额贷</a></li>
+                <li><a href="/client/index">春色校园贷</a></li>
                 <li>|</li>
-                <li><a href="./applyforloan">申请贷款</a></li>
+                <li><a href="/client/applyforexpected">申请预期</a></li>
                 <li>|</li>
-                <li><a href="./onlinepayment">在线还款</a></li>
+                <li><a href="/client/applyforloan">申请贷款</a></li>
                 <li>|</li>
-                <li><a href="./userinfo">个人信息</a></li>
+                <li><a href="/client/onlinepayment">在线还款</a></li>
                 <li>|</li>
-                <li><a href="./message">消息通知</a></li>
+                <li><a href="/client/userinfo">个人信息</a></li>
                 <li>|</li>
-                <li><a href="./problemfedback">问题反馈</a></li>
+                <li><a href="/client/message">消息通知</a></li>
                 <li>|</li>
-                <li><a href="./aboutus">关于我们</a></li>
+                <li><a href="/client/feedback">问题反馈</a></li>
+                <li>|</li>
+                <li><a href="/client/aboutus">关于我们</a></li>
                 <div class="clear"></div>
             </ul>
         </div>
@@ -25,11 +28,11 @@
             <div class="fr">
                 <ul>
                     <li id="login_user">
-                        <a href="./login" target="_blank">登录</a>
+                        <a href="/client/login" target="_blank">登录</a>
                     </li>
                     <li>|</li>
                     <li id="register_exit">
-                        <a href="./register" target="_blank" >注册</a>
+                        <a href="/client/register" target="_blank" >注册</a>
                     </li>
                     <li>|</li>
 
@@ -44,8 +47,7 @@
 <script>
     $(function(){
         $.ajax({
-            url: 'loginresult',
-            data: {name: 'hujun'},
+            url: '/client/loginresult',
             type: "post",
             dataType: "json",
             success: function (data) {
@@ -57,7 +59,7 @@
                     $("#register_exit").append("<a class='exit' href=''>退出</a>");
                     $(".exit").click(function() {
                         if (confirm('系统提示，您确定要退出本次登录吗?')) {
-                            window.location.href = "dropout";
+                            window.location.href = "/client/dropout";
                         }
                     });
 

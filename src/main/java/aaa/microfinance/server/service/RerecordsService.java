@@ -1,6 +1,9 @@
 package aaa.microfinance.server.service;
 
+import aaa.microfinance.server.entiry.Loanorders;
 import aaa.microfinance.server.entiry.Rerecords;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -44,4 +47,19 @@ public interface RerecordsService {
     * @return: int
     */
     public int deleteRerecords(Long id);
+
+    /**
+     * @Description: 根据条件模糊查询还款记录
+     * @Param: [rerecords]
+     * @return: java.util.List<aaa.microfinance.server.entiry.Rerecords>
+     */
+    public List<Rerecords> findRerecords(Rerecords rerecords);
+
+    /**
+    * @Description: 根据订单编号查询贷款详情
+    * @Param: [cusid]
+    * @return: java.util.List<aaa.microfinance.server.entiry.Loanorders>
+    */
+    public List<Loanorders> loanDetail(String ordernumber);
+
 }

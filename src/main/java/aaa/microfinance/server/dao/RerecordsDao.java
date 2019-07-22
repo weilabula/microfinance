@@ -1,8 +1,11 @@
 package aaa.microfinance.server.dao;
 
+import aaa.microfinance.server.entiry.Loanorders;
 import aaa.microfinance.server.entiry.Rerecords;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 /**
@@ -47,4 +50,18 @@ public interface RerecordsDao {
      * @return: int
      */
     public int deleteRerecords(Long id);
+
+    /**
+     * @Description: 根据条件模糊查询还款记录
+     * @Param: [rerecords]
+     * @return: java.util.List<aaa.microfinance.server.entiry.Rerecords>
+     */
+    public List<Rerecords> findRerecords(@Param("cusid") Long cusid, @Param("cusname") String cusname);
+
+    /**
+     * @Description: 根据订单编号查询贷款详情
+     * @Param: [cusid]
+     * @return: java.util.List<aaa.microfinance.server.entiry.Loanorders>
+     */
+    public List<Loanorders> loanDetail(String ordernumber);
 }

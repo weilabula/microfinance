@@ -5,6 +5,7 @@ import aaa.microfinance.client.service.UserRegirestService;
 import aaa.microfinance.client.utils.ReturnModel;
 
 import aaa.microfinance.client.utils.SessionUtils;
+import aaa.microfinance.server.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,14 +59,12 @@ public class UserRegisterController {
         System.out.println (username);
         System.out.println (password);
         returnModel = userRegirestService.userlogin (username, password);
-        /*String userinfo = SessionUtils.getsession (request).getAttribute ("userinfo").toString ();
-        System.out.println (userinfo);*/
         return returnModel;
     }
 
     @RequestMapping("/loginresult")
     public UserBean loginresult(){
-        UserBean userinfo = (UserBean) SessionUtils.getsession (request).getAttribute ("userinfo");
+        UserBean userinfo = (UserBean) SessionUtils.getsession (request).getAttribute (Constants.SESSION_CLIENT_LOGIN);
         System.out.println (userinfo);
         return userinfo;
     }

@@ -18,7 +18,7 @@ import java.util.List;
  * @Date: 2019/7/16 11:06
  */
 @RestController
-@RequestMapping("server")
+@RequestMapping("/server")
 public class LoginController {
 
     @Autowired
@@ -40,7 +40,7 @@ public class LoginController {
             dm.setError("账户名或者密码错误！请重新输入..");
         }
         else{
-            session.setAttribute(Constants.SESSION_EMP,log);
+            session.setAttribute(Constants.SESSION_SERVER_LOGIN,log);
         }
         return dm;
     }
@@ -52,7 +52,7 @@ public class LoginController {
     */
     @RequestMapping("/getSysMenus")
     public List<Module> getSysMenus(HttpSession session){
-        Login login = (Login) session.getAttribute(Constants.SESSION_EMP);
+        Login login = (Login) session.getAttribute(Constants.SESSION_SERVER_LOGIN);
         List<Module> modules = loginService.queryUserMenus(login);
         return modules;
     }

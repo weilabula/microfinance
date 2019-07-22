@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="author" content="order by dede58.com"/>
-	<!--引入client-common公共代码-->
-	<th:block th:include="~{/client-common :: copy}"></th:block>
-	<link rel="stylesheet" href="../client-static/css/jquery.smarticker.css" >
-	<script src="../client-static/js/smarticker.js"></script>
-	<title>艾迪比迪小额贷</title>
-
+	<title>校园春光小额贷</title>
+	<link rel="stylesheet" type="text/css" href="/client-static/css/jquery.smarticker.css">
+	<script src="/client-static/Jquery/jquery-3.4.1.min.js"></script>
 </head>
 <body>
 <!--引用头部-->
@@ -17,7 +15,7 @@
 <!--end header -->
 
 <!-- start banner_x -->
-<div class="banner_x center" style='background:url("static/client-static/image/qiantai/indexcenter.jpg");width: 100%;'>
+<div class="banner_x center" style='background:url("/client-static/image/qiantai/indexcenter.jpg");width: 100%;'>
 	<!--	<img src="/ssm/image/qiantai/indexcenter.jpg" class="indexconter" style="width: 100%">-->
 	<div class="content border-top lightgray blue" id="conter_new" style="width: 634px;
 position: absolute;
@@ -120,16 +118,16 @@ height: 250px;
 background: #e8e1e14f;
 ">
 	<div class="content_2" style="width: 1000px;height: 88px;margin: 2px auto;">
-		<img src="../client-static/image/qiantai/indexcenter01.png">
+		<img src="/client-static/image/qiantai/indexcenter01.png">
 	</div>
 	<div class="content_3" style="width: 1000px;height: 88px;margin: 2px auto;">
-		<img src="../client-static/image/qiantai/indexcenter02.png">
+		<img src="/client-static/image/qiantai/indexcenter02.png">
 	</div>
 </div>
 
 
 <!-- end banner_x -->
-<footer class="footer" style="width: 100%;">
+<!--<footer class="footer" style="width: 100%;">
 	<div class="footer_01" style="width: 100%;
 
 height: 143px;
@@ -140,13 +138,19 @@ border: #b98d8d solid 2px;">
 		<p>Copyright LTD.All Rights Reserved</p>
 		<span><a href="http://www.miitbeian.gov.cn" target="_blank">豫ICP备17120252号</a></span>
 	</div>
-</footer>
-
+</footer>-->
+<div class="footpage"></div>
 </body>
+<script type="text/javascript" src="/client-static/Jquery/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="/client-static/js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="/client-static/js/smarticker.js"></script>
 
 <script>
 	$(function(){
-		$(".toppage").load("top");
+		$(".toppage").load("/client/top");
+	});
+	$(function(){
+		$(".footpage").load("/client/foot");
 	});
 
 </script>

@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 /**
- * @Description: 还款管理实体类
+ * @Description: 还款记录表实体类
  * @Date: 2019/7/19 15:10
 */
 public class Rerecords {
@@ -20,6 +20,24 @@ public class Rerecords {
     private Date reimdate;
     private Long bystages;
     private Integer loanstatus;
+    private String ordernumber;
+    private Long totalpay;
+
+    public Long getTotalpay() {
+        return totalpay;
+    }
+
+    public void setTotalpay(Long totalpay) {
+        this.totalpay = totalpay;
+    }
+
+    public String getOrdernumber() {
+        return ordernumber;
+    }
+
+    public void setOrdernumber(String ordernumber) {
+        this.ordernumber = ordernumber;
+    }
 
     public Long getId() {
         return id;

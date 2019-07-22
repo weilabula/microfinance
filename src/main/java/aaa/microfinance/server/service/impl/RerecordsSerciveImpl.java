@@ -1,9 +1,8 @@
 package aaa.microfinance.server.service.impl;
 
 import aaa.microfinance.server.dao.RerecordsDao;
-import aaa.microfinance.server.entiry.Loanorders;
-import aaa.microfinance.server.entiry.Login;
-import aaa.microfinance.server.entiry.Rerecords;
+import aaa.microfinance.server.entity.Loanorders;
+import aaa.microfinance.server.entity.Rerecords;
 import aaa.microfinance.server.service.RerecordsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

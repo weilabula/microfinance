@@ -1,8 +1,7 @@
 package aaa.microfinance.server.dao;
 
-import aaa.microfinance.server.entiry.Emp;
-import aaa.microfinance.server.entiry.Login;
-import aaa.microfinance.server.entiry.Module;
+import aaa.microfinance.server.entity.Login;
+import aaa.microfinance.server.entity.Module;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

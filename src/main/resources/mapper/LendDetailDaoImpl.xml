@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aaa.microfinance.server.dao.LendDetailDao">
+
+    <!--获取所有放款明细-->
+    <select id="lendDetail" resultType="aaa.microfinance.server.entity.LendDetail">
+        select * from loanorders
+    </select>
+
+    <!--通过客户id查询客户名字-->
+    <select id="findCusameByCusid" resultType="aaa.microfinance.server.entity.Customer">
+        select cusname from customer where id=#{customerid}
+    </select>
+
+    <!--通过订单编号查询分期详情-->
+    <select id="findInstallmentByOrdernumber" resultType="aaa.microfinance.server.entity.Installment">
+        select * from installment where ordernumber=#{ordernumber}
+    </select>
+</mapper>

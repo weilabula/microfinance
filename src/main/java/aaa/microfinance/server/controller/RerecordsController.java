@@ -1,14 +1,12 @@
 package aaa.microfinance.server.controller;
 
 import aaa.microfinance.server.common.DefaultMsg;
-import aaa.microfinance.server.entiry.Loanorders;
-import aaa.microfinance.server.entiry.Rerecords;
+import aaa.microfinance.server.entity.Loanorders;
+import aaa.microfinance.server.entity.Rerecords;
 import aaa.microfinance.server.service.RerecordsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,7 +16,7 @@ import java.util.List;
  * @Date: 2019/7/19 15:06
 */
 @RestController
-@RequestMapping("server")
+@RequestMapping("/server")
 public class RerecordsController {
 
     @Autowired

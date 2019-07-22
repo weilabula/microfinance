@@ -4,12 +4,12 @@
 <mapper namespace="aaa.microfinance.server.dao.LoginDao">
 
     <!--验证登录帐户名和密码-->
-    <select id="checkUsernameAndPassword" resultType="aaa.microfinance.server.entiry.Login">
+    <select id="checkUsernameAndPassword" resultType="aaa.microfinance.server.entity.Login">
         select * from login where username=#{username} and password=#{password}
     </select>
 
     <!--获取当前登录用户能操作的一级菜单-->
-    <select id="listOneModules" resultType="aaa.microfinance.server.entiry.Module">
+    <select id="listOneModules" resultType="aaa.microfinance.server.entity.Module">
         select distinct m.* from login l inner join login_role lr on l.id=lr.lid
                               inner join module_role mr on lr.rid=mr.rid
                               inner join module m on m.id=mr.mid
@@ -17,7 +17,7 @@
     </select>
 
     <!--获取当前登录用户能操作的二级菜单-->
-    <select id="listTwoModules" resultType="aaa.microfinance.server.entiry.Module">
+    <select id="listTwoModules" resultType="aaa.microfinance.server.entity.Module">
         select distinct m.* from login l inner join login_role lr on l.id=lr.lid
                               inner join module_role mr on lr.rid=mr.rid
                               inner join module m on m.pid=mr.mid

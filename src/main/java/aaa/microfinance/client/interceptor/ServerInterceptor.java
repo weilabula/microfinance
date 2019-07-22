@@ -1,8 +1,7 @@
 package aaa.microfinance.client.interceptor;
 
-import aaa.microfinance.client.entity.UserBean;
 import aaa.microfinance.server.common.Constants;
-import aaa.microfinance.server.entiry.Login;
+import aaa.microfinance.server.entity.Login;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;

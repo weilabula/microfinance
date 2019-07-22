@@ -3,9 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <th:block th:include="~{/common :: copy}"></th:block>
-    <title>Title</title>
+    <title>放款明细</title>
+    <style>
+        .demo-table-expand {
+            font-size: 0;
+        }
+        .demo-table-expand label {
+            width: 90px;
+            color: #99a9bf;
+        }
+        .demo-table-expand .el-form-item {
+            margin-right: 0;
+            margin-bottom: 0;
+            width: 50%;
+        }
+    </style>
 </head>
 <body>
+<div id="app">
+    <div style="margin-bottom: 10px;">
+        <el-form :inline="true" ref="formInline" :model="formInline" class="demo-form-inline">
+            <el-form-item label="客户编号">
+                <el-input v-model="formInline.cusid" placeholder="客户编号"></el-input>
+            </el-form-item>
+            <el-form-item label="客户姓名">
+                <el-input v-model="formInline.cusname" placeholder="客户姓名"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="onLoanDetailFind('formInline')">查询</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
 
+    <!--放款明细数据区域-->
+    <!--页面加载时即同时发送获取放款明细数据的请求，回显数据通过数据变量名和tableData中的变量名对应实现-->
+    <template>
+        <el-table :data="tableData" style="width: 100%">
+            <el-table-column type="expand">
+                <template slot-scope="props">
+                    <el-form label-position="left" inline class="demo-table-expand">
+                        <el-form-item label="期数" >
+                            <span>{{ props.row.ins_num }}</span>
+                        </el-form-item>
+                        <el-form-item label="还款状态">
+                            <span>{{ props.row.ins_status }}</span>
+                        </el-form-item>
+                        <el-form-item label="本期应还">
+                            <span>{{ props.row.ins_money }}</span>
+                        </el-form-item>
+                    </el-form>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    label="订单编号"
+                    prop="id">
+            </el-table-column>
+            <el-table-column
+                    label="客户ID"
+                    prop="customerid">
+            </el-table-column>
+            <el-table-column
+                    label="客户名字"
+                    prop="cusname">
+            </el-table-column>
+            <el-table-column
+                    label="贷款金额"
+                    prop="loanmount">
+            </el-table-column>
+            <el-table-column
+                    label="总还款金额"
+                    prop="totalpay">
+            </el-table-column>
+            <el-table-column
+                    label="贷款时间"
+                    prop="orderdate">
+            </el-table-column>
+            <el-table-column
+                    label="分期数"
+                    prop="bystages">
+            </el-table-column>
+        </el-table>
+    </template>
+</div>
 </body>
+
+<script>
+    new Vue({
+        el:"#app",
+        data:{
+            //还款记录数据块，初始为空
+            tableData:[],
+            formInline:{
+                cusid:'',
+                cusname:''
+            }
+        },
+        //当vue组件加载完成后会自动调用此函数
+        mounted:function () {
+            //加载表格数据
+            this.loadTableData();
+        },
+        //事件
+        methods:{
+            //声明加载表格数据的方法
+            loadTableData:function (){
+                //向后台发起ajax请求,加载还款记录表数据
+                var vue=this;
+                axios.post('lendDetails')
+                    .then(function (response) {
+                        vue.tableData=response.data;
+                    })
+                    .catch(function (error) {
+                        Vue.prototype.$message.error("服务器产生严重异常，请联系管理员...");
+                    });
+            },
+            //根据条件模糊查询还款记录
+            onLoanDetailFind:function (formInline) {
+                var vue=this;
+                this.$refs[formInline].validate((valid) => {
+                    if (valid) {
+                        //往后台发送ajax请求，添加或者更新还款记录
+                        axios.post('findLendDetail',this.formInline)
+                            .then(function (response) {
+                                vue.tableData=response.data;
+                            })
+                            .catch(function (error) {
+                                Vue.prototype.$message.error("服务器产生严重异常，请联系管理员...");
+                            });
+                    }
+                    else{
+                        return false;
+                    }
+                });
+            }
+        }
+    });
+</script>
 </html>

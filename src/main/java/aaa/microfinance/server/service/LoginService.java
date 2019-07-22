@@ -1,7 +1,7 @@
 package aaa.microfinance.server.service;
 
-import aaa.microfinance.server.entiry.Login;
-import aaa.microfinance.server.entiry.Module;
+import aaa.microfinance.server.entity.Login;
+import aaa.microfinance.server.entity.Module;
 
 import java.util.List;
 

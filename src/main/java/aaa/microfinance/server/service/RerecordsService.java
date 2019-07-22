@@ -1,9 +1,7 @@
 package aaa.microfinance.server.service;
 
-import aaa.microfinance.server.entiry.Loanorders;
-import aaa.microfinance.server.entiry.Rerecords;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import aaa.microfinance.server.entity.Loanorders;
+import aaa.microfinance.server.entity.Rerecords;
 
 import java.util.List;
 

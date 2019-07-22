@@ -1,7 +1,6 @@
-package aaa.microfinance.server.entiry;
+package aaa.microfinance.server.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 

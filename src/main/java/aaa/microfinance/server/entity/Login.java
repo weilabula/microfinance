@@ -1,4 +1,4 @@
-package aaa.microfinance.server.entiry;
+package aaa.microfinance.server.entity;
 /**
  * @Description: 登录表实体类
  * @Date: 2019/7/19 8:35

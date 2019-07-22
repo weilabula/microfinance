@@ -1,10 +1,10 @@
 package aaa.microfinance.server.controller;
 
 import aaa.microfinance.server.common.Constants;
-import aaa.microfinance.server.entiry.Login;
-import aaa.microfinance.server.entiry.Module;
-import aaa.microfinance.server.service.LoginService;
 import aaa.microfinance.server.common.DefaultMsg;
+import aaa.microfinance.server.entity.Login;
+import aaa.microfinance.server.entity.Module;
+import aaa.microfinance.server.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

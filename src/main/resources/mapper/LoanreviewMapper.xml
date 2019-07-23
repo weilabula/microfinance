@@ -1,0 +1,26 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aaa.microfinance.server.dao.LoanreviewDao">
+    <select id="findloanreview" resultType="aaa.microfinance.server.entity.Loanorders">
+        select * from loanorders
+          <where>
+              <if test="keyword!=null">
+                  (ordernumber like '%${keyword}' or cusname like '%${keyword}') and
+              </if>
+              loanstatus = 0
+          </where>
+
+    </select>
+    <update id="passAfter">
+        update loanorders set loanstatus=1,bankaccountid=#{bankaccountid} where ordernumber=#{ordernumber}
+    </update>
+    <select id="findrate" resultType="java.lang.Double">
+        select rate from rate where type = #{type}
+    </select>
+    <insert id="savepass">
+        insert into installment (ordernumber,ins_num,ins_status,ins_money) values(#{ordernumber},#{i},1,#{v})
+    </insert>
+    <update id="rejectAfter">
+        update loanorders set loanstatus=-1 where ordernumber=#{ordernumber}
+    </update>
+</mapper>

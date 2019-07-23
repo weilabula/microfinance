@@ -11,8 +11,18 @@ import java.util.Date;
 public class Loanorders {
     private Long lid;
     private Long customerid;
+    private String cusname;
+
+    public String getCusname() {
+        return cusname;
+    }
+
+    public void setCusname(String cusname) {
+        this.cusname = cusname;
+    }
+
     private String ordernumber;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date orderdate;
     private Double loanmount;
     private Integer loanway;

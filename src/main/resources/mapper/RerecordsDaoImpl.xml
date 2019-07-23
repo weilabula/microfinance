@@ -2,9 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="aaa.microfinance.server.dao.RerecordsDao">
+
+    <!--********************************************还款记录模块*****************************************-->
     <!--查询所有还款记录-->
     <select id="listRerecords" resultType="aaa.microfinance.server.entity.Rerecords">
-        select * from rerecords order by id desc
+        select * from rerecords where loanstatus=3 order by id desc
     </select>
 
     <!--新增还款记录-->
@@ -24,18 +26,41 @@
 
     <!--根据条件模糊查询还款记录-->
     <select id="findRerecords" resultType="aaa.microfinance.server.entity.Rerecords">
-        select DISTINCT * from rerecords where 1
+        select DISTINCT * from rerecords where loanstatus=3
             <if test="cusid!=null">
                 and LOCATE(#{cusid},cusid)>0
             </if>
             <if test="cusname!=null">
                 and LOCATE(#{cusname},cusname)>0
             </if>
-            order by id desc
+             order by id desc
     </select>
 
-    <!--根据客户ID查询贷款详情-->
-    <select id="loanDetail" resultType="aaa.microfinance.server.entity.Loanorders">
+    <!--根据贷款订单查询贷款详情-->
+    <select id="loanDetail1" resultType="aaa.microfinance.server.entity.Loanorders">
+        select * from loanorders where ordernumber=#{ordernumber}
+    </select>
+
+    <!--********************************************还款确认模块*****************************************-->
+
+    <!--获取所有当期还款记录-->
+    <select id="listReconfirms" resultType="aaa.microfinance.server.entity.Reconfirm">
+        select * from reconfirm where status=1 order by id desc
+    </select>
+
+    <!--根据客户id和客户名字模糊查询还款确认记录-->
+    <select id="findReconfirms" resultType="aaa.microfinance.server.entity.Reconfirm">
+        select * from reconfirm where status=1
+        <if test="cusid!=null">
+            and LOCATE(#{cusid},cusid)>0
+        </if>
+        <if test="cusname!=null">
+            and LOCATE(#{cusname},cusname)>0
+        </if>
+        order by id desc
+    </select>
+
+    <select id="loanDetail2" resultType="aaa.microfinance.server.entity.Loanorders">
         select * from loanorders where ordernumber=#{ordernumber}
     </select>
 </mapper>

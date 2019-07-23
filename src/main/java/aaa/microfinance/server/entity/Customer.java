@@ -25,13 +25,21 @@ public class Customer {
     private String income;
     private String loanuse;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
-    private String regtime;
+    private Date regtime;
     private String Idfrontpath;
     private String idnegativepath;
     private Integer creditid;
     private Integer auditstatus;
     private Integer state;
     private String banknumber;
+
+    public Date getRegtime() {
+        return regtime;
+    }
+
+    public void setRegtime(Date regtime) {
+        this.regtime = regtime;
+    }
 
     public Long getLoginid() {
         return loginid;
@@ -135,14 +143,6 @@ public class Customer {
 
     public void setLoanuse(String loanuse) {
         this.loanuse = loanuse;
-    }
-
-    public String getRegtime() {
-        return regtime;
-    }
-
-    public void setRegtime(String regtime) {
-        this.regtime = regtime;
     }
 
     public String getIdfrontpath() {

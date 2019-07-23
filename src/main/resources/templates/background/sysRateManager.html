@@ -1,11 +1,197 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head >
     <meta charset="UTF-8">
+    <title>利率管理</title>
     <th:block th:include="~{/common :: copy}"></th:block>
-    <title>Title</title>
+    <style>
+        .el-form-item{
+            width:300px;
+        }
+    </style>
 </head>
 <body>
+<div id="rate">
+    <div style="margin-bottom:10px;">
+        <el-button  type="primary" @click="showEditWin">添加利率</el-button>
+        <el-button  type="primary" @click="loadTableData" style="margin-left: 1440px">刷新</el-button>
+        <!--<el-input style="width:300px;" v-model="keyword" ></el-input>-->
+        <!--<el-button type="success" @click="search"  icon="el-icon-search">搜索</el-button>-->
+    </div>
 
+    <el-table stripe border height="800" :data="tableData" style=" width: 100%">
+        <el-table-column prop="id" label="利率编号" > </el-table-column>
+        <el-table-column prop="type" label="利率类别" ></el-table-column>
+        <el-table-column prop="rate" label="利率" ></el-table-column>
+        <el-table-column label="操作">
+            <template slot-scope="scope">
+                <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            </template>
+        </el-table-column>
+    </el-table>
+
+    <el-dialog :title="title" :visible.svnc="dialogVisible" width="30%" :before-close="handleDialogClose">
+        <el-form ref="form" :rules="rules" :model="form" label-width="80px">
+            <el-form-item label="编号:" prop="type" hidden="true" >
+                <el-input v-model="form.id"></el-input>
+            </el-form-item>
+            <el-form-item label="类型:" prop="type" >
+                <el-input v-model="form.type"></el-input>
+            </el-form-item>
+            <el-form-item label="利率" prop="rate">
+                <el-input v-model="form.rate"></el-input>
+            </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="onSubmit('form')">确 定</el-button>
+            <el-button @click="resetForm('form')">清 空</el-button>
+        </span>
+    </el-dialog>
+
+    <el-dialog
+            title="您确定删除该数据吗"
+            :visible.svnc="deleteVisible"
+            width="20%"
+            :before-close="handleDialogClose">
+        <el-form ref="form" :model="form" label-width="80px">
+            <el-form-item label="编号:" prop="type" hidden >
+                <el-input v-model="form.id"></el-input>
+            </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="deleteOK('form')">确 定</el-button>
+            <el-button @click="handleDialogClose()">取 消</el-button>
+        </span>
+    </el-dialog>
+</div>
 </body>
+<script>
+    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+    Vue.prototype.$axios = axios;
+    new Vue({
+        el:'#rate',
+        data:{
+            tableData:[],
+            dialogVisible:false,
+            deleteVisible:false,
+            title:'',
+            form:{
+                id:'',
+                type:'',
+                rate:''
+            },
+            rules:{
+                type:[
+                    { required:true,message:'请输入类型',trigger:'blur'},
+                    {
+                        min: 2,
+                        max: 5,
+                        message: '长度在 2 到 5 个字符'
+                    }
+                ],
+                rate:[
+                    { required:true,message:'请输入利率',trigger:'blur'},
+                    {
+                        pattern:/^([0-9]{1,}[.][0-9]*)$/,
+                        message:'利率只能为小数'
+                    }
+                ]
+            },
+            //控制是否加载中
+            vloading:false
+        },
+        //当vue组件加载完成后会自动调用这个函数
+        mounted:function () {
+            //加载表格数据
+            this.loadTableData();
+        },
+        methods:{
+            //加载表数据
+            loadTableData:function(){
+                this.vioading = true;
+                var vue =this;
+                axios.get('/server/Rate/listAllRates')
+                    .then(function (res) {
+                        vue.tableData=res.data;
+                        vue.vloading=false;
+                    })
+                    .catch(function (error) {
+                        vue.vloading=false;
+                        Vue.prototype.$message.error("服务器产生异常，请联系管理员");
+                    });
+            },
+            showEditWin:function(){
+                this.title='新增利率';
+                //显示编辑利率的窗口
+                this.dialogVisible = true;
+            },
+            onSubmit:function(formName){
+                var vue  = this;
+                this.$refs[formName].validate((valid) => {
+                    if(valid){
+                        axios.post('/server/Rate/saveOrUpdate',this.form)
+                            .then(function(res){
+                                if(res.data.success){
+                                    //刷新页面
+                                    vue.loadTableData();
+                                    //关闭窗口
+                                    vue.dialogVisible=false;
+                                }else{
+                                    Vue.prototype.$message.error(res.data.error);
+                                }
+                            }
+                        ).catch (function (error) {
+                            Vue.prototype.$message.error("服务器产生异常，请联系管理员");
+                        });
+                    }else {
+                        return false;
+                    }
+                });
+            },
+            //重置表单事件
+            resetForm:function (formName) {
+                this.$refs[formName].resetFields();
+            },
+            //关闭表单
+            handleDialogClose:function(){
+                this.dialogVisible = false;
+                this.deleteVisible = false;
+                this.loadTableData();
+            },
+            //修改
+            handleEdit:function(index,row){
+
+                this.dialogVisible=true;
+                this.title='编辑利率';
+                this.form=row;
+            },
+            //删除
+            handleDelete:function(index,row){
+                this.deleteVisible=true;
+                this.form=row;
+            },
+            deleteOK:function(forName){
+                var vue  = this;
+                axios.post('/server/Rate/deleteRate',this.form).then(
+                    function(res){
+                        if(res.data.success){
+                            //刷新页面
+                            vue.loadTableData();
+                            //关闭窗口
+                            vue.deleteVisible=false;
+                        }else{
+                            Vue.prototype.$message.error(res.data.error);
+                        }
+                    }
+                ).catch (function (error) {
+                    Vue.prototype.$message.error("服务器产生异常，请联系管理员");
+                });
+            }
+        }
+
+    });
+
+</script>
+
 </html>

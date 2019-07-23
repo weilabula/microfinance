@@ -1,7 +1,10 @@
 package aaa.microfinance.server.service;
 
 import aaa.microfinance.server.entity.Loanorders;
+import aaa.microfinance.server.entity.Reconfirm;
 import aaa.microfinance.server.entity.Rerecords;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -10,6 +13,8 @@ import java.util.List;
  * @Date: 2019/7/19 15:10
 */
 public interface RerecordsService {
+
+    /********************************************还款记录模块*****************************************/
 
     /**
     * @Description: 查询所有还款记录
@@ -58,6 +63,30 @@ public interface RerecordsService {
     * @Param: [cusid]
     * @return: java.util.List<aaa.microfinance.server.entiry.Loanorders>
     */
-    public List<Loanorders> loanDetail(String ordernumber);
+    public List<Loanorders> loanDetail1(String ordernumber);
+
+
+    /********************************************还款确认模块*****************************************/
+
+    /**
+     * @Description:  获取所有当期还款记录
+     * @Param: []
+     * @return: java.util.List<aaa.microfinance.server.entity.Reconfirm>
+     */
+    public List<Reconfirm> listReconfirms();
+
+    /**
+     * @Description: 根据客户id和客户名字模糊查询还款确认记录
+     * @Param: []
+     * @return: java.util.List<aaa.microfinance.server.entity.Reconfirm>
+     */
+    public List<Reconfirm> findReconfirms(Long cusid,String cusname);
+
+    /**
+    * @Description: 根据订单编号查询贷款详情
+    * @Param: [ordernumber]
+    * @return: java.util.List<aaa.microfinance.server.entity.Loanorders>
+    */
+    public Loanorders loanDetail2(String ordernumber);
 
 }

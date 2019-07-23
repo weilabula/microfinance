@@ -2,6 +2,7 @@ package aaa.microfinance.server.service.impl;
 
 import aaa.microfinance.server.dao.RerecordsDao;
 import aaa.microfinance.server.entity.Loanorders;
+import aaa.microfinance.server.entity.Reconfirm;
 import aaa.microfinance.server.entity.Rerecords;
 import aaa.microfinance.server.service.RerecordsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class RerecordsSerciveImpl implements RerecordsService {
 
     @Autowired
     private RerecordsDao rerecordsDao;
+
+
+    /********************************************还款记录模块*****************************************/
 
     /**
      * @Description: 查询所有还款记录
@@ -86,8 +90,42 @@ public class RerecordsSerciveImpl implements RerecordsService {
      * @Param: [cusid]
      * @return: java.util.List<aaa.microfinance.server.entiry.Loanorders>
      */
-    public List<Loanorders> loanDetail(String ordernumber){
-        List<Loanorders> loanorder = rerecordsDao.loanDetail(ordernumber);
-        return loanorder;
+    public List<Loanorders> loanDetail1(String ordernumber){
+        List<Loanorders> loanorders = rerecordsDao.loanDetail1(ordernumber);
+        return loanorders;
     }
+
+
+    /********************************************还款确认模块*****************************************/
+
+    /**
+     * @Description:  获取所有当期还款记录
+     * @Param: []
+     * @return: java.util.List<aaa.microfinance.server.entity.Reconfirm>
+     */
+    public List<Reconfirm> listReconfirms(){
+        List<Reconfirm> reconfirmList = rerecordsDao.listReconfirms();
+        return reconfirmList;
+    }
+
+    /**
+     * @Description: 根据客户id和客户名字模糊查询还款确认记录
+     * @Param: []
+     * @return: java.util.List<aaa.microfinance.server.entity.Reconfirm>
+     */
+    public List<Reconfirm> findReconfirms(Long cusid,String cusname){
+        List<Reconfirm> reconfirmList = rerecordsDao.findReconfirms(cusid, cusname);
+        return reconfirmList;
+    }
+
+    /**
+     * @Description: 根据订单编号查询贷款详情
+     * @Param: [ordernumber]
+     * @return: java.util.List<aaa.microfinance.server.entity.Loanorders>
+     */
+    public Loanorders loanDetail2(String ordernumber){
+        Loanorders loanorders = rerecordsDao.loanDetail2(ordernumber);
+        return loanorders;
+    }
+
 }

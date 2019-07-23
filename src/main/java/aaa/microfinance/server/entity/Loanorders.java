@@ -1,4 +1,4 @@
-package aaa.microfinance.server.entity;
+package aaa.microfinance.server.entiry;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

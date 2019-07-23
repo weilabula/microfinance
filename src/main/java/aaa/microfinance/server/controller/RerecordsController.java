@@ -2,6 +2,7 @@ package aaa.microfinance.server.controller;
 
 import aaa.microfinance.server.common.DefaultMsg;
 import aaa.microfinance.server.entity.Loanorders;
+import aaa.microfinance.server.entity.Reconfirm;
 import aaa.microfinance.server.entity.Rerecords;
 import aaa.microfinance.server.service.RerecordsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,13 @@ public class RerecordsController {
     @Autowired
     private RerecordsService rerecordsService;
 
+/********************************************还款记录模块*****************************************/
+
+    /**
+    * @Description: 获取所有还款记录
+    * @Param: []
+    * @return: java.util.List<aaa.microfinance.server.entity.Rerecords>
+    */
     @RequestMapping("/re/listRerecords")
     public List<Rerecords> listRerecords(){
         List<Rerecords> rerecords = rerecordsService.listRerecords();
@@ -86,15 +94,51 @@ public class RerecordsController {
         return rerecordsList;
     }
 
-    /** 
-    * @Description: 根据订单编号查询贷款详情
-    * @Param: [rerecords]
-    * @return: java.util.List<aaa.microfinance.server.entiry.Loanorders> 
-    */ 
-    @RequestMapping("/re/loanDetail")
-    public List<Loanorders> loanDetail(@RequestBody Rerecords rerecords){
-        String ordernumber = rerecords.getOrdernumber();
-        List<Loanorders> loanorders = rerecordsService.loanDetail(ordernumber);
+    /**
+     * @Description: 根据订单编号查询贷款详情
+     * @Param: [rerecords]
+     * @return: java.util.List<aaa.microfinance.server.entiry.Loanorders>
+     */
+    @RequestMapping("/re/loanDetail1")
+    public List<Loanorders> loanDetail1(@RequestBody Rerecords rerecords) {
+        List<Loanorders> loanorders = rerecordsService.loanDetail1(rerecords.getOrdernumber());
         return loanorders;
     }
+
+
+/********************************************还款确认模块*****************************************/
+
+    /**
+    * @Description:  获取所有当期还款记录
+    * @Param: []
+    * @return: java.util.List<aaa.microfinance.server.entity.Reconfirm>
+    */
+    @RequestMapping("/re/listReconfirms")
+    public List<Reconfirm> listReconfirms(){
+        List<Reconfirm> reconfirmList = rerecordsService.listReconfirms();
+        return reconfirmList;
+    }
+
+    /**
+    * @Description: 根据客户id和客户名字模糊查询还款确认记录
+    * @Param: []
+    * @return: java.util.List<aaa.microfinance.server.entity.Reconfirm>
+    */
+    @RequestMapping("/re/findReconfirms")
+    public List<Reconfirm> findReconfirms(@RequestBody Reconfirm reconfirm){
+        List<Reconfirm> reconfirms = rerecordsService.findReconfirms(reconfirm.getCusid(), reconfirm.getCusname());
+        return reconfirms;
+    }
+
+    /**
+     * @Description: 根据订单编号查询贷款详情
+     * @Param: [rerecords]
+     * @return: java.util.List<aaa.microfinance.server.entiry.Loanorders>
+     */
+    @RequestMapping("/re/loanDetail2")
+    public Loanorders loanDetail2(@RequestBody Reconfirm reconfirm) {
+        Loanorders loanorders = rerecordsService.loanDetail2(reconfirm.getOrdernumber());
+        return loanorders;
+    }
+
 }

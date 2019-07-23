@@ -26,17 +26,42 @@ public class LendDetailServiceImpl implements LendDetailService {
      * @Param: []
      * @return: java.util.List<aaa.microfinance.server.entiry.LendDetail>
      */
-    public List<LendDetail> lendDetails(){
-        List<LendDetail> lendDetails = lendDetailDao.lendDetails();
+    public List<LendDetail> listLendDetails(){
+        List<LendDetail> lendDetails = lendDetailDao.listLendDetails();
         for(LendDetail lendDetail:lendDetails){
-            //获取客户id，根据id查询客户名字
-            Long customerid = lendDetail.getCustomerid();
-            String cusname = lendDetailDao.findCusameByCusid(customerid).getCusname();
-            lendDetail.setCusname(cusname);
-            //根据订单编号查询分期详情
+            //根据分期数查询对应利息率，进而计算需付总利息
+            Integer bystages = lendDetail.getBystages();
+            Double rate = lendDetailDao.findRateByBystages(bystages);
+            Long loanmount = lendDetail.getLoanmount();
+            lendDetail.setTotalpay(loanmount*(1+rate));
+            //获取分期详情
             String ordernumber = lendDetail.getOrdernumber();
-            List<Installment> installment = lendDetailDao.findInstallmentByOrdernumber(ordernumber);
-            lendDetail.setInstallment(installment);
+            System.out.println(ordernumber);
+            List<Installment> installments = lendDetailDao.findInstallmentByOrdernumber(ordernumber);
+            lendDetail.setInstallment(installments);
+
+        }
+        return lendDetails;
+    }
+
+    /**
+     * @Description: 根据客户id和客户名字模糊查询放款明细
+     * @Param: []
+     * @return: java.util.List<aaa.microfinance.server.entiry.LendDetail>
+     */
+    public List<LendDetail> findLendDetail(Long customerid,String cusname){
+        List<LendDetail> lendDetails = lendDetailDao.findLendDetail(customerid,cusname);
+        for(LendDetail lendDetail:lendDetails){
+            //根据分期数查询对应利息率，进而计算需付总利息
+            Integer bystages = lendDetail.getBystages();
+            Double rate = lendDetailDao.findRateByBystages(bystages);
+            Long loanmount = lendDetail.getLoanmount();
+            lendDetail.setTotalpay(loanmount*(1+rate));
+            //获取分期详情
+            String ordernumber = lendDetail.getOrdernumber();
+            List<Installment> installments = lendDetailDao.findInstallmentByOrdernumber(ordernumber);
+            lendDetail.setInstallment(installments);
+
         }
         return lendDetails;
     }

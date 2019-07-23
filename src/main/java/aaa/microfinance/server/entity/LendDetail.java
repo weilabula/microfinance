@@ -17,7 +17,7 @@ public class LendDetail {
     private Long loanmount;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private Date orderdate;
-    private String bystages;
+    private Integer bystages;
     private Double totalpay;
     private Integer loanstatus;
 
@@ -80,11 +80,11 @@ public class LendDetail {
         this.orderdate = orderdate;
     }
 
-    public String getBystages() {
+    public Integer getBystages() {
         return bystages;
     }
 
-    public void setBystages(String bystages) {
+    public void setBystages(Integer bystages) {
         this.bystages = bystages;
     }
 
@@ -94,5 +94,20 @@ public class LendDetail {
 
     public void setTotalpay(Double totalpay) {
         this.totalpay = totalpay;
+    }
+
+    @Override
+    public String toString() {
+        return "LendDetail{" +
+                "ordernumber='" + ordernumber + '\'' +
+                ", customerid=" + customerid +
+                ", cusname='" + cusname + '\'' +
+                ", loanmount=" + loanmount +
+                ", orderdate=" + orderdate +
+                ", bystages='" + bystages + '\'' +
+                ", totalpay=" + totalpay +
+                ", loanstatus=" + loanstatus +
+                ", installment=" + installment +
+                '}';
     }
 }

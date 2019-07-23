@@ -13,20 +13,23 @@ public class Rerecords {
     private Long cusid;
     private String cusname;
     private Long loanmount;
+
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private Date orderdate;
+
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private Date reimdate;
-    private Long bystages;
+
+    private Integer bystages;
     private Integer loanstatus;
     private String ordernumber;
-    private Long totalpay;
+    private Double totalpay;
 
-    public Long getTotalpay() {
+    public Double getTotalpay() {
         return totalpay;
     }
 
-    public void setTotalpay(Long totalpay) {
+    public void setTotalpay(Double totalpay) {
         this.totalpay = totalpay;
     }
 
@@ -86,11 +89,11 @@ public class Rerecords {
         this.reimdate = reimdate;
     }
 
-    public Long getBystages() {
+    public Integer getBystages() {
         return bystages;
     }
 
-    public void setBystages(Long bystages) {
+    public void setBystages(Integer bystages) {
         this.bystages = bystages;
     }
 

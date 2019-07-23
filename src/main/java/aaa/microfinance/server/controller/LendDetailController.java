@@ -3,6 +3,7 @@ package aaa.microfinance.server.controller;
 import aaa.microfinance.server.entity.LendDetail;
 import aaa.microfinance.server.service.LendDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @Date: 2019/7/22 10:02
 */
 @RestController
-@RequestMapping("/server")
+@RequestMapping("server")
 public class LendDetailController {
     @Autowired
     private LendDetailService lendDetailService;
@@ -23,11 +24,20 @@ public class LendDetailController {
     * @Param: []
     * @return: java.util.List<aaa.microfinance.server.entiry.LendDetail> 
     */
-    @RequestMapping("/lend/lendDetails")
-    public List<LendDetail> lendDetails(){
-        List<LendDetail> lendDetails = lendDetailService.lendDetails();
-        System.out.println("开启放款查询方法");
-        System.out.println(lendDetails);
+    @RequestMapping("/lend/listLendDetails")
+    public List<LendDetail> listLendDetails(){
+        List<LendDetail> lendDetails = lendDetailService.listLendDetails();
+        return lendDetails;
+    }
+    
+    /** 
+    * @Description: 根据客户id和客户名字模糊查询放款明细
+    * @Param: []
+    * @return: java.util.List<aaa.microfinance.server.entity.LendDetail> 
+    */
+    @RequestMapping("/lend/findLendDetail")
+    public List<LendDetail> findLendDetail(@RequestBody LendDetail lendDetail){
+        List<LendDetail> lendDetails = lendDetailService.findLendDetail(lendDetail.getCustomerid(), lendDetail.getCusname());
         return lendDetails;
     }
 }

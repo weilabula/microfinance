@@ -14,5 +14,12 @@ public interface LendDetailService {
      * @Param: []
      * @return: java.util.List<aaa.microfinance.server.entiry.LendDetail>
      */
-    public List<LendDetail> lendDetails();
+    public List<LendDetail> listLendDetails();
+
+    /**
+     * @Description: 根据客户id和客户名字模糊查询放款明细
+     * @Param: []
+     * @return: java.util.List<aaa.microfinance.server.entiry.LendDetail>
+     */
+    public List<LendDetail> findLendDetail(Long customerid,String cusname);
 }

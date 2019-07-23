@@ -3,9 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <th:block th:include="~{/common :: copy}"></th:block>
-    <title>Title</title>
+    <title>还款确认</title>
 </head>
 <body>
+<div id="app">
+    <!--模糊搜索区域-->
+    <div style="margin-bottom: 10px;">
+        <el-form :inline="true" ref="form" :model="form" class="demo-form-inline">
+            <el-form-item label="客户编号">
+                <el-input v-model="form.cusid" placeholder="客户编号"></el-input>
+            </el-form-item>
+            <el-form-item label="客户姓名">
+                <el-input v-model="form.cusname" placeholder="客户姓名"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="onReconfirmFind('form')">查询</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
+    <!--还款记录数据区域-->
+    <!--页面加载时即同时发送获取还款确认数据的请求，回显数据通过数据变量名和tableData中的变量名对应实现-->
+    <el-table :data="tableData" style="width: 100%" stripe border height="650">
+        <el-table-column
+                prop="id"
+                label="编号" v-if="show">
+        </el-table-column>
+        <el-table-column
+                prop="ordernumber"
+                label="订单编号" >
+        </el-table-column>
+        <el-table-column
+                prop="cusid"
+                label="客户编号">
+        </el-table-column>
+        <el-table-column
+                prop="cusname"
+                label="客户姓名">
+        </el-table-column>
+        <el-table-column
+                prop="bystages"
+                label="分期数">
+        </el-table-column>
+        <el-table-column
+                prop="payperiods"
+                label="还款期数">
+        </el-table-column>
+        <el-table-column
+                prop="currentpay"
+                label="当期还款额">
+        </el-table-column>
+        <el-table-column
+                prop="reimdate"
+                label="还款日期">
+        </el-table-column>
+        <el-table-column
+                prop="status"
+                label="还款状态">
+        </el-table-column>
+        <el-table-column label="操作" width="300">
+            <!--scope相当于记录了当前表格中的所有数据，scope.$index中相当于放置了当前选中行的下标，
+            scope.row相当于放置了当前选中行的所有字段内容，因此点编辑的时候编辑框中填充了当前行的所有内容，而新增按钮没有这俩属性，所以点新增后输入框中啥也没有-->
+            <template slot-scope="scope">
+                <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handleDetail(scope.row)">查看详情</el-button>
+            </template>
+        </el-table-column>
+    </el-table>
 
+    <!--查看详情弹窗-->
+    <el-dialog
+            title="提示"
+            :visible.sync="detailVisible"
+            width="30%" >
+        <el-form :data="dataDetail" label-width="80px">
+            <el-form-item label="编号">
+                <el-input v-model="dataDetail.lid" :disabled="edit"></el-input>
+            </el-form-item>
+            <el-form-item label="订单编号">
+                <el-input v-model="dataDetail.ordernumber" :disabled="edit"></el-input>
+            </el-form-item>
+            <el-form-item label="客户编号">
+                <el-input v-model="dataDetail.customerid" :disabled="edit"></el-input>
+            </el-form-item>
+            <el-form-item label="客户名称">
+                <el-input v-model="dataDetail.cusname" :disabled="edit"></el-input>
+            </el-form-item>
+            <el-form-item label="贷款金额">
+                <el-input v-model="dataDetail.loanmount" :disabled="edit"></el-input>
+            </el-form-item>
+            <el-form-item label="贷款方式">
+                <el-input v-model="dataDetail.loanway" :disabled="edit"></el-input>
+            </el-form-item>
+            <el-form-item label="银行卡号">
+                <el-input v-model="dataDetail.banknumber" :disabled="edit"></el-input>
+            </el-form-item>
+            <el-form-item label="贷款日期">
+                <el-input v-model="dataDetail.orderdate" :disabled="edit"></el-input>
+            </el-form-item>
+            <el-form-item label="分期数">
+                <el-input v-model="dataDetail.bystages" :disabled="edit"></el-input>
+            </el-form-item>
+            <el-form-item label="是否逾期">
+                <el-input v-model="dataDetail.overdue" :disabled="edit"></el-input>
+            </el-form-item>
+            <el-form-item label="还款状态">
+                <el-input v-model="dataDetail.loanstatus" :disabled="edit"></el-input>
+            </el-form-item>
+        </el-form>
+        <!--按钮-->
+        <span style="margin-left: 185px">
+            <el-button type="primary" @click="detailVisible = false">确 定</el-button>
+        </span>
+
+    </el-dialog>
+</div>
+
+<script>
+    new Vue({
+        el:"#app",
+        data:{
+            //还款记录数据表格，初始值置空
+            tableData:[],
+            //贷款详情input框开启禁用
+            edit: true,
+            //贷款详数据表格，初始为空
+            dataDetail:[],
+            //贷款详情弹窗，初始隐藏
+            detailVisible:false,
+            //搜索框，初始值置空
+            form:{
+                cusid:'',
+                cusname:''
+            },
+            //编号列，隐藏
+            show:false,
+        },
+        //当vue组件加载完成后会自动调用此函数
+        mounted:function () {
+            this.loadTableData();
+        },
+        methods:{
+            //声明数据加载表格的方法
+            loadTableData:function () {
+                //向后台发起ajax请求,加载还款记录表数据
+                var vue=this;
+                axios.post('listReconfirms')
+                    .then(function (response) {
+                        vue.tableData=response.data;
+                    })
+                    .catch(function (error) {
+                        Vue.prototype.$message.error("服务器产生严重异常，请联系管理员...");
+                    });
+            },
+            onReconfirmFind:function (form) {
+                var vue=this;
+                this.$refs[form].validate((valid) => {
+                    if (valid) {
+                        //往后台发送ajax请求，添加或者更新还款记录
+                        axios.post('findReconfirms',this.form)
+                            .then(function (response) {
+                                vue.tableData=response.data;
+                            })
+                            .catch(function (error) {
+                                Vue.prototype.$message.error("服务器产生严重异常，请联系管理员...");
+                            });
+                    }
+                    else{
+                        return false;
+                    }
+                });
+            },
+            //查看详情
+            handleDetail:function (row) {
+                this.detailVisible=true;
+                var vue=this;
+                //往后台发送ajax请求，添加或者更新还款记录
+                axios.post('loanDetail2',row)
+                    .then(function (response) {
+                        vue.dataDetail=response.data;
+                    })
+                    .catch(function (error) {
+                        Vue.prototype.$message.error("服务器产生严重异常，请联系管理员...");
+                    });
+            }
+        }
+    });
+</script>
 </body>
 </html>

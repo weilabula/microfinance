@@ -27,6 +27,11 @@ public class UserRegirestServiceImp  implements UserRegirestService {
         return userRegirestDao.userregirest (userBean);
     }
 
+    /**
+    * @Description: 验证账户信息
+    * @Param: [username, password]
+    * @return: aaa.microfinance.client.utils.ReturnModel
+    */
     @Override
     public ReturnModel userlogin(String username, String password) {
         UserBean userlogin = userRegirestDao.userlogin (username, password);

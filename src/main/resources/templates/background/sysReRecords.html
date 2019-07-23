@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <th:block th:include="~{/common :: copy}"></th:block>
-    <title>还款管理</title>
+    <title>还款记录</title>
 </head>
 <body>
 <div id="app">
+    <!--模糊搜索区域-->
     <div style="margin-bottom: 10px;">
         <el-form :inline="true" ref="formInline" :model="formInline" class="demo-form-inline">
-            <el-button type="primary" @click="showEditWind">添加用户</el-button>
+            <el-button type="primary" @click="showEditWind">添加还款记录</el-button>
             <el-form-item label="客户编号">
                 <el-input v-model="formInline.cusid" placeholder="客户编号"></el-input>
             </el-form-item>
@@ -21,6 +22,68 @@
             </el-form-item>
         </el-form>
     </div>
+    <!--还款记录数据区域-->
+    <!--页面加载时即同时发送获取还款记录数据的请求，回显数据通过数据变量名和tableData中的变量名对应实现-->
+    <el-table :data="tableData" style="width: 100%" stripe border height="650">
+        <el-table-column
+                prop="id"
+                label="编号" v-if="show">
+        </el-table-column>
+        <el-table-column
+                prop="cusid"
+                label="客户编号">
+        </el-table-column>
+        <el-table-column
+                prop="cusname"
+                label="客户姓名">
+        </el-table-column>
+        <el-table-column
+                prop="ordernumber"
+                label="订单编号">
+        </el-table-column>
+        <el-table-column
+                prop="loanmount"
+                label="贷款金额">
+        </el-table-column>
+        <el-table-column
+                prop="orderdate"
+                label="贷款日期">
+        </el-table-column>
+        <el-table-column
+                prop="reimdate"
+                label="还款日期">
+        </el-table-column>
+        <el-table-column
+                prop="totalpay"
+                label="还款总额">
+        </el-table-column>
+        <el-table-column
+                prop="bystages"
+                label="分期数">
+        </el-table-column>
+        <el-table-column
+                prop="loanstatus"
+                label="还款状态">
+        </el-table-column>
+        <el-table-column label="操作" width="300">
+            <!--scope相当于记录了当前表格中的所有数据，scope.$index中相当于放置了当前选中行的下标，
+            scope.row相当于放置了当前选中行的所有字段内容，因此点编辑的时候编辑框中就填充了当前行的所有内容，而新增按钮没有这俩属性，所以点新增后输入框中啥也没有-->
+            <template slot-scope="scope">
+                <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handleDetail(scope.row)">查看详情</el-button>
+            </template>
+        </el-table-column>
+    </el-table>
+
     <!--新增/修改对话框-->
     <!--新增时，先为整个表单框定义一个总变量form（可以任意命名），
         然后为每一个输入框附加一个子属性，id，cusid，cusname...等等，
@@ -75,64 +138,6 @@
             </span>
     </el-dialog>
 
-    <!--还款记录数据区域-->
-    <!--页面加载时即同时发送获取还款记录数据的请求，回显数据通过数据变量名和tableData中的变量名对应实现-->
-    <el-table :data="tableData" style="width: 100%" stripe border height="650">
-        <el-table-column
-                prop="id"
-                label="编号">
-        </el-table-column>
-        <el-table-column
-                prop="cusid"
-                label="客户编号">
-        </el-table-column>
-        <el-table-column
-                prop="cusname"
-                label="客户姓名">
-        </el-table-column>
-        <el-table-column
-                prop="ordernumber"
-                label="订单编号">
-        </el-table-column>
-        <el-table-column
-                prop="loanmount"
-                label="贷款金额">
-        </el-table-column>
-        <el-table-column
-                prop="orderdate"
-                label="贷款日期">
-        </el-table-column>
-        <el-table-column
-                prop="reimdate"
-                label="还款日期">
-        </el-table-column>
-        <el-table-column
-                prop="bystages"
-                label="分期数">
-        </el-table-column>
-        <el-table-column
-                prop="loanstatus"
-                label="还款状态">
-        </el-table-column>
-        <el-table-column label="操作" width="300">
-            <!--scope相当于记录了当前表格中的所有数据，scope.$index中相当于放置了当前选中行的下标，
-            scope.row相当于放置了当前选中行的所有字段内容，因此点编辑的时候编辑框中填充了当前行的所有内容，而新增按钮没有这俩属性，所以点新增后输入框中啥也没有-->
-            <template slot-scope="scope">
-                <el-button
-                        size="mini"
-                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                <el-button
-                        size="mini"
-                        type="danger"
-                        @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                <el-button
-                        size="mini"
-                        type="danger"
-                        @click="handleDetail(scope.row)">查看详情</el-button>
-            </template>
-        </el-table-column>
-    </el-table>
-
     <!--贷款详情数据表-->
     <el-dialog :title="title2" :visible.sync="detailVisible" width="80%">
             <el-table :data="dataDetail"  stripe border>
@@ -160,12 +165,21 @@
             tableData:[],
             //订单详情数据块，初始为空
             dataDetail:[],
+            //编号列，隐藏
+            show:false,
+            //编辑/新增弹窗，初始隐藏
             editVisible:false,
+            //删除弹窗，初始隐藏
             deleteVisible:false,
+            //查看详情弹窗，初始隐藏
             detailVisible:false,
+            //编辑/新增弹窗标题，初始为空
             title:'',
-            title1:'',
+            //删除弹窗标题
+            title1:'删除还款记录',
+            //查看详情弹窗标题
             title2:'贷款详情',
+            //新增/修改输入框属性
             form:{
                 //初始值均为空
                 id:'',
@@ -178,14 +192,16 @@
                 bystages:'',
                 loanstatus:''
             },
+            //删除弹窗属性
             form1:{
                 id:''
             },
+            //模糊查询输入框属性
             formInline:{
                 cusid:'',
                 cusname:''
             },
-            //声明校验规则
+            //声明编辑/新增框的校验规则
             rules:{
                 cusid: [
                     { required: true, message: '请输入客户编号', trigger: 'blur' }
@@ -276,13 +292,12 @@
             },
             //删除
             handleDelete:function(index, row) {
-                this.title1="删除还款记录";
                 this.deleteVisible=true;
                 this.form1=row;
             },
-            onReSubmit:function (formName) {
+            onReSubmit:function (form1) {
                 var vue=this;
-                this.$refs[formName].validate((valid) => {
+                this.$refs[form1].validate((valid) => {
                     if (valid) {
                         //往后台发送ajax请求，添加或者更新还款记录
                         axios.post('deleteRerecords',this.form1)
@@ -335,9 +350,10 @@
                 this.detailVisible=true;
                 var vue=this;
                 //往后台发送ajax请求，添加或者更新还款记录
-                axios.post('loanDetail',row)
+                axios.post('loanDetail1',row)
                     .then(function (response) {
                         vue.dataDetail=response.data;
+                        console.info(response.data);
                     })
                     .catch(function (error) {
                         Vue.prototype.$message.error("服务器产生严重异常，请联系管理员...");

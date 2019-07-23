@@ -1,11 +1,11 @@
 package aaa.microfinance.server.dao;
 
-import aaa.microfinance.server.entiry.Loanorders;
-import aaa.microfinance.server.entiry.Rerecords;
+import aaa.microfinance.server.entity.Loanorders;
+import aaa.microfinance.server.entity.Reconfirm;
+import aaa.microfinance.server.entity.Rerecords;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 /**
@@ -15,6 +15,8 @@ import java.util.List;
 @Mapper
 @Repository
 public interface RerecordsDao {
+
+    /********************************************还款记录模块*****************************************/
 
     /**
      * @Description: 查询所有还款记录
@@ -63,5 +65,30 @@ public interface RerecordsDao {
      * @Param: [cusid]
      * @return: java.util.List<aaa.microfinance.server.entiry.Loanorders>
      */
-    public List<Loanorders> loanDetail(String ordernumber);
+    public List<Loanorders> loanDetail1(String ordernumber);
+
+
+/********************************************还款确认模块*****************************************/
+
+    /**
+     * @Description:  获取所有当期还款记录
+     * @Param: []
+     * @return: java.util.List<aaa.microfinance.server.entity.Reconfirm>
+     */
+    public List<Reconfirm> listReconfirms();
+
+    /**
+     * @Description: 根据客户id和客户名字模糊查询还款确认记录
+     * @Param: []
+     * @return: java.util.List<aaa.microfinance.server.entity.Reconfirm>
+     */
+    public List<Reconfirm> findReconfirms(Long cusid,String cusname);
+
+    /**
+     * @Description: 根据订单编号查询贷款详情
+     * @Param: [cusid]
+     * @return: java.util.List<aaa.microfinance.server.entiry.Loanorders>
+     */
+    public Loanorders loanDetail2(String ordernumber);
+
 }

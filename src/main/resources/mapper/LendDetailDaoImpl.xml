@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aaa.microfinance.server.dao.LendDetailDao">
+    <!--配置一对多映射-->
+    <resultMap id="lendDetailMap" type="aaa.microfinance.server.entity.LendDetail" autoMapping="true">
+        <id property="ordernumber" column="ordernumber"></id>
+        <collection property="installment" ofType="aaa.microfinance.server.entity.Installment"></collection>
+    </resultMap>
+
+    <!--获取所有放款明细-->
+    <select id="listLendDetails" resultMap="lendDetailMap">
+        select * from loanorders where loanstatus=2 order by lid desc
+    </select>
+
+    <!--根据客户id和客户名字模糊查询放款明细-->
+    <select id="findLendDetail" resultMap="lendDetailMap">
+        select DISTINCT * from loanorders where loanstatus=2
+        <if test="customerid!=null">
+            and LOCATE(#{customerid},customerid)>0
+        </if>
+        <if test="cusname!=null">
+            and LOCATE(#{cusname},cusname)>0
+        </if>
+        order by lid desc
+    </select>
+
+    <!--通过客户id查询客户名字-->
+    <select id="findCusameByCusid" resultType="java.lang.String">
+        select cusname from customer where id=#{customerid}
+    </select>
+
+    <!--通过订单编号查询分期详情-->
+    <select id="findInstallmentByOrdernumber" resultType="aaa.microfinance.server.entity.Installment">
+        select * from installment where ordernumber=#{ordernumber}
+    </select>
+
+    <!--根据分期数查询对应利息-->
+    <select id="findRateByBystages" resultType="java.lang.Double">
+        select rate from rate where type=#{bystages}
+    </select>
+
+</mapper>

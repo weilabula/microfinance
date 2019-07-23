@@ -1,4 +1,4 @@
-package aaa.microfinance.server.entiry;
+package aaa.microfinance.server.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -11,6 +11,7 @@ import java.util.Date;
 public class Loanorders {
     private Long lid;
     private Long customerid;
+    private String cusname;
     private String ordernumber;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private Date orderdate;
@@ -21,6 +22,14 @@ public class Loanorders {
     private Integer bankaccountid;
     private String banknumber;
     private Integer loanstatus;
+
+    public String getCusname() {
+        return cusname;
+    }
+
+    public void setCusname(String cusname) {
+        this.cusname = cusname;
+    }
 
     public Long getLid() {
         return lid;

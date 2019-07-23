@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="aaa.microfinance.server.dao.RateDao">
+    <select id="listAllRates" resultType="aaa.microfinance.server.entity.Rate">
+        select * from rate
+    </select>
+
+    <insert id="saveRate">
+        insert into rate(type,rate) VALUES(#{rate.type},#{rate.rate})
+    </insert>
+
+    <update id="updateRate">
+        update rate set type = #{rate.type},rate = #{rate.rate} where id = #{rate.id}
+    </update>
+    
+    <delete id="deleteRate">
+        delete from rate where id = #{rate.id}
+    </delete>
+</mapper>
